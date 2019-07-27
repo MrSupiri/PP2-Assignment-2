@@ -2836,7 +2836,7 @@
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
 					"name": "MusicItem",
-					"visibility": "private",
+					"visibility": "package",
 					"attributes": [
 						{
 							"_type": "UMLAttribute",
@@ -3343,7 +3343,8 @@
 								"$ref": "AAAAAAFsLPRFAvNm+H8="
 							},
 							"name": "songTitle",
-							"visibility": "private"
+							"visibility": "private",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -3352,7 +3353,8 @@
 								"$ref": "AAAAAAFsLPRFAvNm+H8="
 							},
 							"name": "duration",
-							"visibility": "private"
+							"visibility": "private",
+							"type": ""
 						}
 					],
 					"operations": [
@@ -3404,7 +3406,8 @@
 								"$ref": "AAAAAAFsLPlpfPPH57w="
 							},
 							"name": "speed",
-							"visibility": "private"
+							"visibility": "private",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -3413,7 +3416,8 @@
 								"$ref": "AAAAAAFsLPlpfPPH57w="
 							},
 							"name": "diameters",
-							"visibility": "private"
+							"visibility": "private",
+							"type": ""
 						}
 					],
 					"operations": [
@@ -3450,7 +3454,8 @@
 								"$ref": "AAAAAAFsLRq6Bv7TK5c="
 							},
 							"name": "empID",
-							"visibility": "private"
+							"visibility": "private",
+							"type": ""
 						}
 					],
 					"operations": [
