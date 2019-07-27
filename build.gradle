@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+}
+
+group 'me.isala'
+version '1.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    compile 'org.mongodb:mongodb-driver:3.6.0'
+}
+
+// https://stackoverflow.com/questions/21128652/location-is-required-in-javafx-with-gradle
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["src/main/java"]
+            includes = ["**/*.fxml"]
+        }
+    }
+}
