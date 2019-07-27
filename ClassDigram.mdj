@@ -1316,7 +1316,7 @@
 											"top": 606,
 											"width": 93.55810546875,
 											"height": 13,
-											"text": "-speed",
+											"text": "-speed: int",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1333,7 +1333,7 @@
 											"top": 621,
 											"width": 93.55810546875,
 											"height": 13,
-											"text": "-diameters",
+											"text": "-diameter: float",
 											"horizontalAlignment": 0
 										}
 									],
@@ -2300,7 +2300,7 @@
 											"top": 796,
 											"width": 86.68994140625,
 											"height": 13,
-											"text": "-empID",
+											"text": "+empID",
 											"horizontalAlignment": 0
 										}
 									],
@@ -3407,7 +3407,7 @@
 							},
 							"name": "speed",
 							"visibility": "private",
-							"type": ""
+							"type": "int"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -3415,9 +3415,9 @@
 							"_parent": {
 								"$ref": "AAAAAAFsLPlpfPPH57w="
 							},
-							"name": "diameters",
+							"name": "diameter",
 							"visibility": "private",
-							"type": ""
+							"type": "float"
 						}
 					],
 					"operations": [
@@ -3454,7 +3454,6 @@
 								"$ref": "AAAAAAFsLRq6Bv7TK5c="
 							},
 							"name": "empID",
-							"visibility": "private",
 							"type": ""
 						}
 					],
@@ -3517,19 +3516,6 @@
 					},
 					"name": "WestminsterMusicStoreManager",
 					"ownedElements": [
-						{
-							"_type": "UMLInterfaceRealization",
-							"_id": "AAAAAAFsLTN14waadyM=",
-							"_parent": {
-								"$ref": "AAAAAAFsLSJuDwQfXXw="
-							},
-							"source": {
-								"$ref": "AAAAAAFsLSJuDwQfXXw="
-							},
-							"target": {
-								"$ref": "AAAAAAFsLRq6Bv7TK5c="
-							}
-						},
 						{
 							"_type": "UMLInterfaceRealization",
 							"_id": "AAAAAAFsLTPDCAeHTkU=",
