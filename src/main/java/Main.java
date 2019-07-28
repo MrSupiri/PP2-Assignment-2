@@ -1,7 +1,4 @@
-import Model.MusicItem;
-import Model.StoreManager;
-import Model.Vinyl;
-import Model.WestminsterMusicStoreManager;
+import Model.*;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
@@ -10,8 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.util.UUID;
+import java.math.BigDecimal;
 
 public class Main extends Application {
 
@@ -29,18 +25,19 @@ public class Main extends Application {
                 System.getenv("MONGODB_USER"), System.getenv("MONGODB_PASSWORD"),
                 System.getenv("MONGODB_HOST"), System.getenv("MONGODB_DATABASE"));
 
-        System.out.println(MONGODB_URI);
-
-//        MongoClientURI uri = new MongoClientURI(
-//                "mongodb://supiri:60zAyLSG38XKt8c4Hv7d@localhost:27017/WestminsterMusicStore?retryWrites=true&w=majority")
-
         MongoClientURI uri = new MongoClientURI(MONGODB_URI);
         MongoClient mongoClient = new MongoClient(uri);
         MongoDatabase database = mongoClient.getDatabase(System.getenv("MONGODB_DATABASE"));
         StoreManager manager = new WestminsterMusicStoreManager(database);
-//        manager.addItem(new MusicItem[0] = new Vinyl(1, ));
-        System.out.println();
-//        launch(args);
+//        manager.addItem(new Vinyl("Reputation", "POP", new Date(2017, 11, 10), "Taylor Swift", new BigDecimal("32.86"), 200, 30));
+        CD differentWorld = new CD("Different World", "EDM", new Date(2018, 12, 14), "Alan Walker", new BigDecimal("9.99"));
+        differentWorld.addSong("Intro", 76);
+        differentWorld.addSong("Lost Control", 222);
+        differentWorld.addSong("I Don't Wanna Go", 161);
+        differentWorld.addSong("Lily", 195);
+        differentWorld.addSong("Lonely", 216);
+        differentWorld.addSong("Different World", 202);
+        manager.addItem(differentWorld);
     }
 
 

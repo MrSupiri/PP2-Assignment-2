@@ -1,6 +1,6 @@
 package Model;
 
-class Date {
+public class Date {
     private int year;
     private int month;
     private int day;
@@ -30,7 +30,7 @@ class Date {
             throw  new IllegalArgumentException("Month should be in range of 1-12");
     }
 
-    private int getDay() {
+    public int getDay() {
         return day;
     }
 

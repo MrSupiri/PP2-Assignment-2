@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public interface StoreManager {
     ArrayList<MusicItem> items = new ArrayList<>();
-    void addItem(MusicItem[] items);
-    boolean deleteItem(int itemId);
+    void addItem(MusicItem item);
+    boolean deleteItem(String itemId);
     void sortItems();
-    void sellItem(int itemId);
+    void sellItem(String itemId);
     void updateSalesLog();
 }

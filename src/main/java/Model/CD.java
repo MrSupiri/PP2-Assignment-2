@@ -1,21 +1,22 @@
 package Model;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.ArrayList;
 
 public class CD extends MusicItem {
-    private List<Song> songs;
+    private ArrayList<String> songs = new ArrayList<>();
     private int totalDuration;
 
     public CD(String title, String genre, Date releaseDate, String artist, BigDecimal price) {
         super(title, genre, releaseDate, artist, price);
     }
 
-    public void addSong(Song song) {
+    public void addSong(String song, int duration) {
         this.songs.add(song);
+        this.totalDuration += duration;
     }
 
-    public List<Song> getSongs() {
+    public ArrayList<String> getSongs() {
         return songs;
     }
 
@@ -23,7 +24,4 @@ public class CD extends MusicItem {
         return totalDuration;
     }
 
-    private void updateDotalDuration(Song song){
-        this.totalDuration += song.getDuration();
-    }
 }
