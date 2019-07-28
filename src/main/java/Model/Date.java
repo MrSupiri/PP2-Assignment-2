@@ -40,4 +40,13 @@ public class Date {
         else
             throw  new IllegalArgumentException("Day should be in range of 1-31");
     }
+
+    @Override
+    public String toString() {
+        return "Date{" +
+                "year=" + year +
+                ", month=" + month +
+                ", day=" + day +
+                '}';
+    }
 }

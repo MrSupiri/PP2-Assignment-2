@@ -4,9 +4,14 @@ import java.math.BigDecimal;
 
 public class Vinyl extends MusicItem {
     private int speed;
-    private float diameter;
+    private double diameter;
 
-    public Vinyl(String title, String genre, Date releaseDate, String artist, BigDecimal price, int speed, float diameter) {
+    public Vinyl(String itemID, String title, String genre, Date releaseDate, String artist, BigDecimal price, int speed, double diameter) {
+        super(itemID, title, genre, releaseDate, artist, price);
+        this.speed = speed;
+        this.diameter = diameter;
+    }
+    public Vinyl(String title, String genre, Date releaseDate, String artist, BigDecimal price, int speed, double diameter) {
         super(title, genre, releaseDate, artist, price);
         this.speed = speed;
         this.diameter = diameter;
@@ -23,11 +28,11 @@ public class Vinyl extends MusicItem {
             throw new IllegalArgumentException("Speed of the Vinyl can't be negative");
     }
 
-    public float getDiameter() {
+    public double getDiameter() {
         return diameter;
     }
 
-    public void setDiameter(float diameter) {
+    public void setDiameter(double diameter) {
         if(diameter >= 0)
             this.diameter = diameter;
         else

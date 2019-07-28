@@ -10,6 +10,15 @@ public abstract class MusicItem {
     private String artist;
     private BigDecimal price;
 
+    MusicItem(String itemID, String title, String genre, Date releaseDate, String artist, BigDecimal price) {
+        this.itemID = itemID;
+        this.title = title;
+        this.genre = genre;
+        this.releaseDate = releaseDate;
+        this.artist = artist;
+        this.price = price;
+    }
+
     MusicItem(String title, String genre, Date releaseDate, String artist, BigDecimal price) {
         this.itemID = UUID.randomUUID().toString().replace("-", "");
         this.title = title;
@@ -41,5 +50,17 @@ public abstract class MusicItem {
 
     BigDecimal getPrice() {
         return price;
+    }
+
+    @Override
+    public String toString() {
+        return "MusicItem{" +
+                "itemID='" + itemID + '\'' +
+                ", title='" + title + '\'' +
+                ", genre='" + genre + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", artist='" + artist + '\'' +
+                ", price=" + price +
+                '}';
     }
 }
