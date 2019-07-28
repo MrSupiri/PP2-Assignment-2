@@ -2421,7 +2421,7 @@
 											"top": 716,
 											"width": 298.00341796875,
 											"height": 13,
-											"text": "-items: List<MusicItem>",
+											"text": "+items: List<MusicItem>",
 											"horizontalAlignment": 0
 										}
 									],
@@ -2540,7 +2540,7 @@
 											"top": 814,
 											"width": 298.00341796875,
 											"height": 13,
-											"text": "+generateReport(): void",
+											"text": "+updateSalesLog(): void",
 											"horizontalAlignment": 0
 										}
 									],
@@ -3745,7 +3745,6 @@
 								"$ref": "AAAAAAFsLRq6Bv7TK5c="
 							},
 							"name": "items",
-							"visibility": "private",
 							"type": "List<MusicItem>"
 						}
 					],
@@ -3885,7 +3884,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFsLRq6Bv7TK5c="
 							},
-							"name": "generateReport",
+							"name": "updateSalesLog",
 							"parameters": [
 								{
 									"_type": "UMLParameter",

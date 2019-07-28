@@ -11,7 +11,7 @@ abstract class MusicItem {
     private String artist;
     private BigDecimal price;
 
-    public MusicItem(int itemID, String title, String genre, Date releaseDate, String artist, BigDecimal price) {
+    MusicItem(int itemID, String title, String genre, Date releaseDate, String artist, BigDecimal price) {
         this.itemID = itemID;
         this.title = title;
         this.genre = genre;
@@ -20,27 +20,27 @@ abstract class MusicItem {
         this.price = price;
     }
 
-    public int getIteitemID() {
+    int getItemID() {
         return itemID;
     }
 
-    public String getTitle() {
+    String getTitle() {
         return title;
     }
 
-    public String getGenre() {
+    String getGenre() {
         return genre;
     }
 
-    public Date getReleaseDate() {
+    Date getReleaseDate() {
         return releaseDate;
     }
 
-    public String getArtist() {
+    String getArtist() {
         return artist;
     }
 
-    public BigDecimal getPrice() {
+    BigDecimal getPrice() {
         return price;
     }
 }
