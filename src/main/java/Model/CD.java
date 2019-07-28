@@ -7,8 +7,8 @@ public class CD extends MusicItem {
     private List<Song> songs;
     private int totalDuration;
 
-    public CD(int itemID, String title, String genre, Date releaseDate, String artist, BigDecimal price) {
-        super(itemID, title, genre, releaseDate, artist, price);
+    public CD(String title, String genre, Date releaseDate, String artist, BigDecimal price) {
+        super(title, genre, releaseDate, artist, price);
     }
 
     public void addSong(Song song) {

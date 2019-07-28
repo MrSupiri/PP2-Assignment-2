@@ -21,9 +21,14 @@ public class  WestminsterMusicStoreManager implements StoreManager {
 
     }
 
+    // TODO: This need to hold max of 1000 items
     @Override
-    public void addItem(MusicItem item) {
-        items.add(item);
+    public void addItem(MusicItem[] items) {
+        for(MusicItem item: items){
+            this.items.add(item);
+            System.out.println(item.getClass());
+//            MusicItemCollection.insertOne();
+        }
     }
 
     @Override

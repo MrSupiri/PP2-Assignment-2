@@ -135,7 +135,7 @@
 											"top": 126,
 											"width": 286,
 											"height": 13,
-											"text": "-itemID: int",
+											"text": "-itemID: String",
 											"horizontalAlignment": 0
 										},
 										{
@@ -254,7 +254,7 @@
 											"top": 224,
 											"width": 286,
 											"height": 13,
-											"text": "+getItemID(): int",
+											"text": "+getItemID(): String",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2895,7 +2895,7 @@
 							},
 							"name": "itemID",
 							"visibility": "private",
-							"type": "int"
+							"type": "String"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -2966,8 +2966,8 @@
 									"_parent": {
 										"$ref": "AAAAAAFsMw7w0kOiMag="
 									},
-									"name": "return int",
-									"type": "int",
+									"name": "return String",
+									"type": "String",
 									"direction": "return"
 								}
 							]

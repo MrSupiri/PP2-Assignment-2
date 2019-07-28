@@ -1,18 +1,17 @@
 package Model;
-
 import java.math.BigDecimal;
+import java.util.UUID;
 
-// Package Level Private
-abstract class MusicItem {
-    private int itemID;
+public abstract class MusicItem {
+    private String itemID;
     private String title;
     private String genre;
     private Date releaseDate;
     private String artist;
     private BigDecimal price;
 
-    MusicItem(int itemID, String title, String genre, Date releaseDate, String artist, BigDecimal price) {
-        this.itemID = itemID;
+    MusicItem(String title, String genre, Date releaseDate, String artist, BigDecimal price) {
+        this.itemID = UUID.randomUUID().toString().replace("-", "");
         this.title = title;
         this.genre = genre;
         this.releaseDate = releaseDate;
@@ -20,7 +19,7 @@ abstract class MusicItem {
         this.price = price;
     }
 
-    int getItemID() {
+    String getItemID() {
         return itemID;
     }
 

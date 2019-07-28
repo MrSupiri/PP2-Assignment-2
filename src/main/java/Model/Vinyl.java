@@ -6,8 +6,8 @@ public class Vinyl extends MusicItem {
     private int speed;
     private float diameter;
 
-    public Vinyl(int itemID, String title, String genre, Date releaseDate, String artist, BigDecimal price, int speed, float diameter) {
-        super(itemID, title, genre, releaseDate, artist, price);
+    public Vinyl(String title, String genre, Date releaseDate, String artist, BigDecimal price, int speed, float diameter) {
+        super(title, genre, releaseDate, artist, price);
         this.speed = speed;
         this.diameter = diameter;
     }

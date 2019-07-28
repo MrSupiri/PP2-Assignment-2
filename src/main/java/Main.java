@@ -1,4 +1,6 @@
+import Model.MusicItem;
 import Model.StoreManager;
+import Model.Vinyl;
 import Model.WestminsterMusicStoreManager;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
@@ -8,6 +10,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.util.UUID;
 
 public class Main extends Application {
 
@@ -34,7 +38,8 @@ public class Main extends Application {
         MongoClient mongoClient = new MongoClient(uri);
         MongoDatabase database = mongoClient.getDatabase(System.getenv("MONGODB_DATABASE"));
         StoreManager manager = new WestminsterMusicStoreManager(database);
-
+//        manager.addItem(new MusicItem[0] = new Vinyl(1, ));
+        System.out.println();
 //        launch(args);
     }
 
