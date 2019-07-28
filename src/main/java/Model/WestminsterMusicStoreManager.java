@@ -1,9 +1,25 @@
 package Model;
 
+import com.mongodb.Block;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
+
 import java.util.ArrayList;
 
 public class  WestminsterMusicStoreManager implements StoreManager {
     private ArrayList<MusicItem> items = new ArrayList<>();
+    private MongoDatabase database;
+    private MongoCollection<Document> MusicItemCollection;
+
+    public WestminsterMusicStoreManager(MongoDatabase database) {
+        this.database = database;
+        MusicItemCollection = database.getCollection("MusicItem");
+        // https://mongodb.github.io/mongo-java-driver/3.4/driver/getting-started/quick-start/
+        Block<Document> printBlock = document -> System.out.println(document.toJson());
+        MusicItemCollection.find().forEach(printBlock);
+
+    }
 
     @Override
     public void addItem(MusicItem item) {
