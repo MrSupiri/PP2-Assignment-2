@@ -29,7 +29,10 @@ public class Main extends Application {
         MongoClient mongoClient = new MongoClient(uri);
         MongoDatabase database = mongoClient.getDatabase(System.getenv("MONGODB_DATABASE"));
         StoreManager manager = new WestminsterMusicStoreManager(database);
-//        manager.addItem(new Vinyl("Reputation", "POP", new Date(2017, 11, 10), "Taylor Swift", new BigDecimal("32.86"), 200, 30));
+//        manager.deleteItem("5bb1dd8cf4ff45eeb4eb4ee3dd508392");
+//        manager.sortItems();
+        manager.addItem(new Vinyl("Reputation", "POP", new Date(2017, 11, 10), "Taylor Swift", new BigDecimal("32.86"), 200, 30));
+        manager.listItems();
 //        CD differentWorld = new CD("Different World", "EDM", new Date(2018, 12, 14), "Alan Walker", new BigDecimal("9.99"));
 //        differentWorld.addSong("Intro", 76);
 //        differentWorld.addSong("Lost Control", 222);

@@ -43,10 +43,6 @@ public class Date {
 
     @Override
     public String toString() {
-        return "Date{" +
-                "year=" + year +
-                ", month=" + month +
-                ", day=" + day +
-                '}';
+        return year + "/" + month + "/" + day;
     }
 }

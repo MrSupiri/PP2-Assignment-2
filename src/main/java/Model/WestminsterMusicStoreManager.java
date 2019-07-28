@@ -5,8 +5,6 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import org.bson.types.Decimal128;
-
-import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -55,6 +53,7 @@ public class WestminsterMusicStoreManager implements StoreManager {
                 );
             }
         });
+
     }
 
     // TODO: This need to hold max of 1000 items
@@ -65,6 +64,7 @@ public class WestminsterMusicStoreManager implements StoreManager {
         }
 
         this.items.add(item);
+
         Document doc = new Document("itemID", item.getItemID())
                 .append("title", item.getTitle())
                 .append("genre", item.getGenre())
@@ -73,6 +73,7 @@ public class WestminsterMusicStoreManager implements StoreManager {
                         .append("day", item.getReleaseDate().getDay())
                 ).append("artist", item.getArtist())
                 .append("price", item.getPrice());
+
         if(item.getClass().getName().equals("Model.Vinyl")){
             Vinyl vinyl = (Vinyl) item;
             doc.append("speed", vinyl.getSpeed())
@@ -85,6 +86,7 @@ public class WestminsterMusicStoreManager implements StoreManager {
                     .append("totalDuration", cd.getTotalDuration())
                     .append("type", "CD");
         }
+
         musicItemCollection.insertOne(doc);
     }
 
@@ -98,6 +100,32 @@ public class WestminsterMusicStoreManager implements StoreManager {
             }
         }
         return false;
+    }
+
+    @Override
+    public void listItems(){
+        String format = "| %-3s | %-32s | %-25s | %-10s | %-12s | %-17s | %-9s | %-18s | %-14s | %-5s | %-8s |%n";
+
+        System.out.println("+-----+----------------------------------+---------------------------+------------+--------------+-------------------+-----------+--------------------+----------------+-------+----------+");
+        System.out.println("|  #  |             Item UUID            |            Title          | Genre      | Release Date |       Artist      |   Price   |        Songs       | Total Duration | Speed | Diameter |");
+        System.out.println("+-----+----------------------------------+---------------------------+------------+--------------+-------------------+-----------+--------------------+----------------+-------+----------+");
+
+        int index = 1;
+        for(MusicItem item: items){
+            if(item.getClass().getName().equals("Model.CD")){
+                CD cd = (CD) item;
+                System.out.printf(format, index, cd.getItemID(), cd.getTitle(), cd.getGenre(), cd.getReleaseDate(), cd.getArtist(), "USD "+cd.getPrice(), cd.getSongs().get(0), String.format("%s:%-2d mins", cd.getTotalDuration()/60, cd.getTotalDuration()%60),  "-", "-");
+                for(int y=1; y<cd.getSongs().size(); y++){
+                    System.out.printf(format, "", "", "", "", "", "", "", cd.getSongs().get(y), "", "", "");
+                }
+            }
+            else{
+                Vinyl vinyl = (Vinyl) item;
+                System.out.printf(format, index, vinyl.getItemID(), vinyl.getTitle(), vinyl.getGenre(), vinyl.getReleaseDate(), vinyl.getArtist(), "USD "+vinyl.getPrice(), "-", "-", vinyl.getSpeed(), vinyl.getDiameter());
+            }
+            System.out.println("+-----+----------------------------------+---------------------------+------------+--------------+-------------------+-----------+--------------------+----------------+-------+----------+");
+            index++;
+        }
     }
 
     @Override

@@ -51,16 +51,4 @@ public abstract class MusicItem {
     BigDecimal getPrice() {
         return price;
     }
-
-    @Override
-    public String toString() {
-        return "MusicItem{" +
-                "itemID='" + itemID + '\'' +
-                ", title='" + title + '\'' +
-                ", genre='" + genre + '\'' +
-                ", releaseDate=" + releaseDate +
-                ", artist='" + artist + '\'' +
-                ", price=" + price +
-                '}';
-    }
 }
