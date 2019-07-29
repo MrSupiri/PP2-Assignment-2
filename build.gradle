@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'org.openjfx.javafxplugin' version '0.0.7'
+    id 'application'
 }
 
 group 'me.isala'
@@ -11,17 +13,13 @@ repositories {
     mavenCentral()
 }
 
+javafx {
+    version = "12"
+    modules = [ 'javafx.controls',  'javafx.fxml' ]
+}
 
 dependencies {
     compile 'org.mongodb:mongodb-driver:3.6.0'
 }
 
-// https://stackoverflow.com/questions/21128652/location-is-required-in-javafx-with-gradle
-sourceSets {
-    main {
-        resources {
-            srcDirs = ["src/main/java"]
-            includes = ["**/*.fxml"]
-        }
-    }
-}
+mainClassName = 'Main'

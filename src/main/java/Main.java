@@ -6,16 +6,18 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import java.math.BigDecimal;
+import java.util.Scanner;
 
 public class Main extends Application {
+    private static Scanner sc = new Scanner(System.in);
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("View/StudentRef.fxml"));
+//        Parent root = FXMLLoader.load(getClass().getResource("View/StudentRef.fxml"));
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 500, 500));
+        primaryStage.setScene(new Scene(new VBox(), 500, 500));
         primaryStage.show();
     }
 
@@ -29,21 +31,88 @@ public class Main extends Application {
         MongoClient mongoClient = new MongoClient(uri);
         MongoDatabase database = mongoClient.getDatabase(System.getenv("MONGODB_DATABASE"));
         StoreManager manager = new WestminsterMusicStoreManager(database);
-//        manager.deleteItem("5bb1dd8cf4ff45eeb4eb4ee3dd508392");
-//        manager.sortItems();
-        manager.addItem(new Vinyl("Reputation", "POP", new Date(2017, 11, 10), "Taylor Swift", new BigDecimal("32.86"), 200, 30));
-        manager.listItems();
-//        CD differentWorld = new CD("Different World", "EDM", new Date(2018, 12, 14), "Alan Walker", new BigDecimal("9.99"));
-//        differentWorld.addSong("Intro", 76);
-//        differentWorld.addSong("Lost Control", 222);
-//        differentWorld.addSong("I Don't Wanna Go", 161);
-//        differentWorld.addSong("Lily", 195);
-//        differentWorld.addSong("Lonely", 216);
-//        differentWorld.addSong("Different World", 202);
-//        differentWorld.addSong("Interlude", 79);
-//        differentWorld.addSong("Sing Me To Sleep", 188);
-//        manager.addItem(differentWorld);
+
+
+
+        System.out.println("\n\n\n\n");
+        System.out.println(" +---------------------------------------------------------+");
+        System.out.println(" |   Welcome to Westminster Music Store Management System  |");
+        System.out.println(" |   Please Select one of the following options to proceed |");
+        System.out.println(" +---------------------------------------------------------+\n");
+        displayMenu();
+
+        int option;
+
+        do {
+            // Prevent User from entering a Letter
+            System.out.print(">>> ");
+            while (!sc.hasNextInt()) {
+                System.out.println("\nERROR 406: Invalid Input\n");
+                System.out.print(">>> ");
+                // Take the next Input
+                if(sc.hasNextLine()) {
+                    sc.nextLine();
+                }
+            }
+            option = sc.nextInt();
+            sc.nextLine();
+            // Switch case statement to map inputs to it's relevant methods
+            switch (option) {
+                case 1:
+                    break;
+
+                case 2:
+                    break;
+
+                case 3:
+                    break;
+
+                case 4:
+                    break;
+
+                case 5:
+                    break;
+
+                case 6:
+                    break;
+
+                case 7:
+                    launch(args);
+                    break;
+
+                case 8:
+                    displayMenu();
+                    break;
+
+                case 9:
+                    System.out.println("Syncing with Database");
+                    System.out.println("Gracefully exiting the Program");
+                    System.exit(0);
+                    break;
+
+                // Entered Value didn't match with any of the outputs
+                default:
+                    System.out.println("\nERROR 406: Invalid Input");
+                    displayMenu();
+            }
+
+        } while (option != 9);
+
+
     }
 
+    private static void displayMenu(){
+        System.out.println(" +---------------------------------------------------------+");
+        System.out.println(" | 1 | Add a Item to them System                           |");
+        System.out.println(" | 2 | Delete Item from the System                         |");
+        System.out.println(" | 3 | Print Summery about Items in the System             |");
+        System.out.println(" | 4 | Print Detailed Summery about Items in the System    |");
+        System.out.println(" | 5 | Sort Items in ascending order by title              |");
+        System.out.println(" | 6 | Sell Item(s) to User                                |");
+        System.out.println(" | 7 | Launch JavaFX UI                                    |");
+        System.out.println(" | 8 | Display the Menu Again                              |");
+        System.out.println(" | 9 | Exit Program                                        |");
+        System.out.println(" +---------------------------------------------------------+");
+    }
 
 }
