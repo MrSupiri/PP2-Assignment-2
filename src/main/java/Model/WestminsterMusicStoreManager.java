@@ -5,17 +5,24 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import org.bson.types.Decimal128;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 
-// https://mongodb.github.io/mongo-java-driver/3.4/driver/getting-started/quick-start/
+// https://mongodb.github.io/mongo-java-driver/3.11/driver/getting-started/quick-start/
 public class WestminsterMusicStoreManager implements StoreManager {
     private ArrayList<MusicItem> items = new ArrayList<>();
     private MongoCollection<Document> musicItemCollection;
+    private MongoDatabase database;
 
     public WestminsterMusicStoreManager(MongoDatabase database) {
-        musicItemCollection = database.getCollection("MusicItem");
+        this.database = database;
+        musicItemCollection = this.database.getCollection("MusicItem");
 
         musicItemCollection.find().forEach((Block<Document>) document -> {
             Document date = (Document) document.get("releaseDate");
@@ -129,17 +136,64 @@ public class WestminsterMusicStoreManager implements StoreManager {
     }
 
     @Override
+    public void itemSummary(){
+        String format = "| %-3s | %-32s | %-25s | %-6s |%n";
+
+        System.out.println("+-----+----------------------------------+---------------------------+--------+");
+        System.out.println("|  #  |             Item UUID            |            Title          |  Type  |");
+        System.out.println("+-----+----------------------------------+---------------------------+--------+");
+
+        int index = 1;
+        for(MusicItem item: items){
+            String type = item.getClass().getName().equals("Model.CD") ? "CD" : "Vinyl";
+            System.out.printf(format, index, item.getItemID(), item.getTitle(), type);
+            System.out.println("+-----+----------------------------------+---------------------------+--------+");
+            index++;
+        }
+    }
+
+    @Override
     public void sortItems() {
         items.sort((item1, item2) -> item1.getTitle().compareToIgnoreCase(item2.getTitle()));
     }
 
     @Override
-    public void sellItem(String itemId) {
+    public void sellItems(ArrayList<String> items) {
+        MongoCollection<Document> salesLog = this.database.getCollection("salesLog");
+        StringBuilder salesLogCSV = new StringBuilder();
+        List<Document> documents = new ArrayList<>();
+        for(String item: items){
+            MusicItem musicItem = this.searchItem(item);
+            Document doc = new Document("title", musicItem.getTitle())
+                    .append("itemID", musicItem.getItemID())
+                    .append("price", musicItem.getPrice())
+                    .append("timeOfPurchase", new java.util.Date());
+            documents.add(doc);
+            salesLogCSV.append(String.format("%s,%s,%s,%s\n", musicItem.getTitle(), musicItem.getItemID(), musicItem.getPrice(), new java.util.Date()));
+        }
+        salesLog.insertMany(documents);
 
+        // https://stackoverflow.com/questions/9620683/java-fileoutputstream-create-file-if-not-exists
+        try {
+            File salesLogFile = new File("SalesLog.csv");
+            boolean newFile = salesLogFile.createNewFile(); // if file already exists will do nothing
+            FileOutputStream salesLogFileSteam = new FileOutputStream(salesLogFile, true);
+            if(newFile)
+                salesLogFileSteam.write("title,itemID,price,timeOfPurchase\n".getBytes());
+            salesLogFileSteam.write(salesLogCSV.toString().getBytes());
+            salesLogFileSteam.close();
+        }catch (IOException e) {
+            System.out.println("\n\tError While writing to salesLog.csv\n");
+        }
     }
 
     @Override
-    public void updateSalesLog() {
-
+    public MusicItem searchItem(String itemID) {
+        for(MusicItem item: items){
+            if(item.getItemID().equals(itemID)){
+                return item;
+            }
+        }
+        return null;
     }
 }

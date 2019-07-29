@@ -28,27 +28,27 @@ public abstract class MusicItem {
         this.price = price;
     }
 
-    String getItemID() {
+    public String getItemID() {
         return itemID;
     }
 
-    String getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    String getGenre() {
+    public String getGenre() {
         return genre;
     }
 
-    Date getReleaseDate() {
+    public Date getReleaseDate() {
         return releaseDate;
     }
 
-    String getArtist() {
+    public String getArtist() {
         return artist;
     }
 
-    BigDecimal getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 }
