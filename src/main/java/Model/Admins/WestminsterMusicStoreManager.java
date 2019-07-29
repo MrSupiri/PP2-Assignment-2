@@ -1,4 +1,9 @@
-package Model;
+package Model.Admins;
+
+import Model.Date;
+import Model.Items.CD;
+import Model.Items.MusicItem;
+import Model.Items.Vinyl;
 
 import com.mongodb.Block;
 import com.mongodb.client.MongoCollection;
@@ -16,51 +21,14 @@ import static com.mongodb.client.model.Filters.eq;
 
 // https://mongodb.github.io/mongo-java-driver/3.11/driver/getting-started/quick-start/
 public class WestminsterMusicStoreManager implements StoreManager {
-    private ArrayList<MusicItem> items = new ArrayList<>();
+    private ArrayList<MusicItem> items;
     private MongoCollection<Document> musicItemCollection;
     private MongoDatabase database;
 
     public WestminsterMusicStoreManager(MongoDatabase database) {
         this.database = database;
         musicItemCollection = this.database.getCollection("MusicItem");
-
-        musicItemCollection.find().forEach((Block<Document>) document -> {
-            Document date = (Document) document.get("releaseDate");
-            if(document.getString("type").equals("Vinyl")){
-                items.add(
-                        new Vinyl(
-                                document.getString("itemID"),
-                                document.getString("title"),
-                                document.getString("genre"),
-                                new Date(date.getInteger("year"),
-                                        date.getInteger("month"),
-                                        date.getInteger("day")),
-                                document.getString("artist"),
-                                ((Decimal128) document.get("price")).bigDecimalValue(),
-                                document.getInteger("speed"),
-                                document.getDouble("diameter")
-                        )
-                );
-            }
-            else{
-                items.add(
-                        new CD(
-                                document.getString("itemID"),
-                                document.getString("title"),
-                                document.getString("genre"),
-                                new Date(date.getInteger("year"),
-                                        date.getInteger("month"),
-                                        date.getInteger("day")),
-                                document.getString("artist"),
-                                ((Decimal128) document.get("price")).bigDecimalValue(),
-                                (ArrayList<String>) document.get("songs"),
-                                document.getInteger("totalDuration")
-
-                        )
-                );
-            }
-        });
-
+        items = fetchDateFromDatabase(musicItemCollection);
     }
 
     // TODO: This need to hold max of 1000 items
@@ -81,7 +49,7 @@ public class WestminsterMusicStoreManager implements StoreManager {
                 ).append("artist", item.getArtist())
                 .append("price", item.getPrice());
 
-        if(item.getClass().getName().equals("Model.Vinyl")){
+        if(item.getClass().getName().equals("Model.Items.Vinyl")){
             Vinyl vinyl = (Vinyl) item;
             doc.append("speed", vinyl.getSpeed())
                     .append("diameter", vinyl.getDiameter())
@@ -119,7 +87,7 @@ public class WestminsterMusicStoreManager implements StoreManager {
 
         int index = 1;
         for(MusicItem item: items){
-            if(item.getClass().getName().equals("Model.CD")){
+            if(item.getClass().getName().equals("Model.Items.CD")){
                 CD cd = (CD) item;
                 System.out.printf(format, index, cd.getItemID(), cd.getTitle(), cd.getGenre(), cd.getReleaseDate(), cd.getArtist(), "USD "+cd.getPrice(), cd.getSongs().get(0), String.format("%s:%-2d mins", cd.getTotalDuration()/60, cd.getTotalDuration()%60),  "-", "-");
                 for(int y=1; y<cd.getSongs().size(); y++){
@@ -145,7 +113,7 @@ public class WestminsterMusicStoreManager implements StoreManager {
 
         int index = 1;
         for(MusicItem item: items){
-            String type = item.getClass().getName().equals("Model.CD") ? "CD" : "Vinyl";
+            String type = item.getClass().getName().equals("Model.Items.CD") ? "CD" : "Vinyl";
             System.out.printf(format, index, item.getItemID(), item.getTitle(), type);
             System.out.println("+-----+----------------------------------+---------------------------+--------+");
             index++;
@@ -195,5 +163,46 @@ public class WestminsterMusicStoreManager implements StoreManager {
             }
         }
         return null;
+    }
+
+    public static ArrayList<MusicItem> fetchDateFromDatabase(MongoCollection<Document> musicItemCollection){
+        ArrayList<MusicItem> items = new ArrayList<>();
+        musicItemCollection.find().forEach((Block<Document>) document -> {
+            Document date = (Document) document.get("releaseDate");
+            if(document.getString("type").equals("Vinyl")){
+                items.add(
+                        new Vinyl(
+                                document.getString("itemID"),
+                                document.getString("title"),
+                                document.getString("genre"),
+                                new Date(date.getInteger("year"),
+                                        date.getInteger("month"),
+                                        date.getInteger("day")),
+                                document.getString("artist"),
+                                ((Decimal128) document.get("price")).bigDecimalValue(),
+                                document.getInteger("speed"),
+                                document.getDouble("diameter")
+                        )
+                );
+            }
+            else{
+                items.add(
+                        new CD(
+                                document.getString("itemID"),
+                                document.getString("title"),
+                                document.getString("genre"),
+                                new Date(date.getInteger("year"),
+                                        date.getInteger("month"),
+                                        date.getInteger("day")),
+                                document.getString("artist"),
+                                ((Decimal128) document.get("price")).bigDecimalValue(),
+                                (ArrayList<String>) document.get("songs"),
+                                document.getInteger("totalDuration")
+
+                        )
+                );
+            }
+        });
+        return items;
     }
 }

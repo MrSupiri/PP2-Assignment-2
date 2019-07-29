@@ -1,30 +1,20 @@
 import Model.*;
+import Model.Admins.StoreManager;
+import Model.Admins.WestminsterMusicStoreManager;
+import Model.Items.CD;
+import Model.Items.MusicItem;
+import Model.Items.Vinyl;
+import View.GUI;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
-import javafx.application.Application;
-//import javafx.fxml.FXMLLoader;
-//import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Main extends Application {
+public class Main {
     private static Scanner sc = new Scanner(System.in);
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-//        Parent root = FXMLLoader.load(getClass().getResource("View/StudentRef.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(new VBox(), 500, 500));
-        primaryStage.show();
-    }
-
 
     public static void main(String[] args) {
         String MONGODB_URI = String.format("mongodb://%s:%s@%s:27017/%s?retryWrites=true&w=majority",
@@ -36,7 +26,7 @@ public class Main extends Application {
         MongoDatabase database = mongoClient.getDatabase(System.getenv("MONGODB_DATABASE"));
         StoreManager manager = new WestminsterMusicStoreManager(database);
 
-        System.out.println("\n\n\n\n");
+        System.out.println("\n\n");
         System.out.println(" +---------------------------------------------------------+");
         System.out.println(" |   Welcome to Westminster Music Store Management System  |");
         System.out.println(" |   Please Select one of the following options to proceed |");
@@ -80,7 +70,7 @@ public class Main extends Application {
                     break;
 
                 case 7:
-                    launch(args);
+                    GUI.main(database.getCollection("MusicItem"));
                     break;
 
                 case 8:

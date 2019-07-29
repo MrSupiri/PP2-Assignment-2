@@ -1,4 +1,6 @@
-package Model;
+package Model.Admins;
+import Model.Items.MusicItem;
+
 import java.util.ArrayList;
 
 public interface StoreManager {
