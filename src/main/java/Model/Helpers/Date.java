@@ -1,4 +1,4 @@
-package Model;
+package Model.Helpers;
 
 public class Date {
     private int year;

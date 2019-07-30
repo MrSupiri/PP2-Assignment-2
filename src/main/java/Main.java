@@ -1,6 +1,7 @@
 import Model.Admins.StoreManager;
 import Model.Admins.WestminsterMusicStoreManager;
-import Model.Date;
+import Model.Helpers.Date;
+import Model.Helpers.Utilities;
 import Model.Items.CD;
 import Model.Items.MusicItem;
 import Model.Items.Vinyl;
@@ -17,10 +18,11 @@ import org.bson.conversions.Bson;
 import java.math.BigDecimal;
 import java.util.*;
 
+import static Model.Helpers.Utilities.*;
+
 @SuppressWarnings("SameParameterValue")
 public class Main {
     private static final double BUFFER_STOCK_PERCENTAGE = 60.0;
-    private static Scanner sc = new Scanner(System.in);
     private static StoreManager manager;
 
     public static void main(String[] args) {
@@ -32,6 +34,8 @@ public class Main {
         MongoClient mongoClient = new MongoClient(uri);
         MongoDatabase database = mongoClient.getDatabase(System.getenv("MONGODB_DATABASE"));
         manager = new WestminsterMusicStoreManager(database);
+
+        Utilities.sc = new Scanner(System.in);
 
         System.out.println("\n\n");
         System.out.println(" +---------------------------------------------------------+");
@@ -52,7 +56,7 @@ public class Main {
 
                 case 2:
                     System.out.print("Enter the UUID of the Item You want to delete: ");
-                    String itemID = sc.nextLine();
+                    String itemID = Utilities.sc.nextLine();
                     if (manager.deleteItem(itemID))
                         System.out.println(itemID + " was deleted from the database");
                     else
@@ -110,7 +114,7 @@ public class Main {
         String itemID;
         BigDecimal total = BigDecimal.ZERO;
         System.out.print("Enter the UUID of the Item you want to buy (enter -1 to exit) : ");
-        itemID = sc.nextLine();
+        itemID = Utilities.sc.nextLine();
 
         while (!itemID.equals("-1")) {
             MusicItem item = manager.searchItem(itemID);
@@ -122,7 +126,7 @@ public class Main {
                 System.out.println("Items was not found the Database");
             }
             System.out.print("Enter the UUID of the Item you want to buy (enter -1 to exit) : ");
-            itemID = sc.nextLine();
+            itemID = Utilities.sc.nextLine();
 
         }
 
@@ -135,21 +139,21 @@ public class Main {
     private static void addItemToDatabase() {
         String type;
         System.out.print("What kind of Music Item you want to Add ? (CD/Vinyl): ");
-        type = sc.nextLine().toLowerCase();
+        type = Utilities.sc.nextLine().toLowerCase();
         while (!type.equals("cd") && !type.equals("vinyl")){
             System.out.println("\n\tInvalid Input !");
             System.out.print("What kind of Music Item you want to Add ? (CD/Vinyl): ");
-            type = sc.nextLine().toLowerCase();
+            type = Utilities.sc.nextLine().toLowerCase();
         }
         System.out.printf("Name of the %s: ", type);
-        String name = sc.nextLine();
+        String name = Utilities.sc.nextLine();
         System.out.printf("Genre of the %s: ", type);
-        String genre = sc.nextLine();
+        String genre = Utilities.sc.nextLine();
 
         Date releaseDate = getReleaseDate(type);
 
         System.out.printf("Artist of the %s: ", type);
-        String artist = sc.nextLine();
+        String artist = Utilities.sc.nextLine();
 
         BigDecimal price = getBigDecimalInput(String.format("Price of the %s: ", type), "Invalid Price");
             if (type.equals("cd")) {
@@ -160,7 +164,7 @@ public class Main {
                 int i = 1;
                 do {
                     System.out.printf("Enter the song number %s of %s CD: ", i, name);
-                    songName = sc.nextLine();
+                    songName = Utilities.sc.nextLine();
                     if (!songName.equals("-1"))
                         cd.addSong(songName, getIntegerInput("Duration of the Song in seconds: ", "Invalid Duration"));
                     i++;
@@ -249,116 +253,4 @@ public class Main {
         System.out.println(" +---------------------------------------------------------+");
     }
 
-    // https://memorynotfound.com/get-first-day-of-the-month-date-java/
-    // https://stackoverflow.com/questions/34076518/calendar-get-last-day-of-previous-month
-    private static java.util.Date firstOfThisMonth() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new java.util.Date());
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
-        return cal.getTime();
-    }
-
-    private static java.util.Date firstOfLastMonth() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        cal.setTime(firstOfThisMonth());
-        cal.add(Calendar.MONTH, -1);
-        return cal.getTime();
-    }
-
-    /**
-     * prompt user again again till the user enters a Integer
-     * @param message - prompt message
-     * @param error - Error given when user enters a invalid number
-     * @return - number user input
-     */
-    private static int getIntegerInput(String message, String error) {
-        System.out.print(message);
-        while (!sc.hasNextInt()) {
-            System.out.printf("\n\t%s\n\n", error);
-            System.out.print(message);
-            sc.nextLine();
-        }
-        int input = sc.nextInt();
-        sc.nextLine();
-        return input;
-    }
-
-    private static int getIntegerInput(String message, String error, Boolean nonNegative) {
-        System.out.print(message);
-        while (!sc.hasNextInt()) {
-            System.out.printf("\n\t%s\n\n", error);
-            System.out.print(message);
-            sc.nextLine();
-        }
-        int input = sc.nextInt();
-        sc.nextLine();
-        if(nonNegative && input < 0){
-            System.out.printf("\n\t%s\n\n", error);
-            input = getIntegerInput(message, error);
-        }
-        return input;
-    }
-
-    // Same as above but for BigDecimals
-    private static BigDecimal getBigDecimalInput(String message, String error) {
-        System.out.print(message);
-        while (!sc.hasNextBigDecimal()) {
-            System.out.printf("\n\t%s\n\n", error);
-            System.out.print(message);
-            sc.nextLine();
-        }
-        BigDecimal input = sc.nextBigDecimal();
-        sc.nextLine();
-        return input;
-    }
-
-    // Same as above but for Doubles
-    private static double getDoubleInput(String message, String error) {
-        System.out.print(message);
-        while (!sc.hasNextDouble()) {
-            System.out.printf("\n\t%s\n\n", error);
-            System.out.print(message);
-            sc.nextLine();
-        }
-        double input = sc.nextDouble();
-        sc.nextLine();
-        return input;
-    }
-
-    private static double getDoubleInput(String message, String error, Boolean nonNegative) {
-        System.out.print(message);
-        while (!sc.hasNextDouble()) {
-            System.out.printf("\n\t%s\n\n", error);
-            System.out.print(message);
-            sc.nextLine();
-        }
-        double input = sc.nextDouble();
-        if(nonNegative && input < 0){
-            System.out.printf("\n\t%s\n\n", error);
-            input = getDoubleInput(message, error);
-        }
-        sc.nextLine();
-        return input;
-    }
-
-    private static Date getReleaseDate(String type){
-        try{
-            int releasedYear = getIntegerInput(String.format("Released year of this %s: ", type), "Invalid year!");
-            int releasedMonth = getIntegerInput(String.format("Released month of this %s: ", type), "Invalid month!");
-            int releasedDay = getIntegerInput(String.format("Released day of this %s: ", type), "Invalid day!");
-            return new Date(releasedYear, releasedMonth, releasedDay);
-        }catch (IllegalArgumentException e){
-            System.out.println("\n"+e.getMessage());
-            return getReleaseDate(type);
-        }
-
-    }
 }

@@ -1,6 +1,6 @@
 package Model.Items;
 
-import Model.Date;
+import Model.Helpers.Date;
 
 import java.math.BigDecimal;
 
@@ -15,15 +15,15 @@ public class Vinyl extends MusicItem {
     }
     public Vinyl(String title, String genre, Date releaseDate, String artist, BigDecimal price, int speed, double diameter) {
         super(title, genre, releaseDate, artist, price);
-        this.speed = speed;
-        this.diameter = diameter;
+        this.setSpeed(speed);
+        this.setDiameter(diameter);
     }
 
     public int getSpeed() {
         return speed;
     }
 
-    public void setSpeed(int speed) {
+    private void setSpeed(int speed) {
         if(speed >= 0)
             this.speed = speed;
         else
@@ -34,7 +34,7 @@ public class Vinyl extends MusicItem {
         return diameter;
     }
 
-    public void setDiameter(double diameter) {
+    private void setDiameter(double diameter) {
         if(diameter >= 0)
             this.diameter = diameter;
         else
