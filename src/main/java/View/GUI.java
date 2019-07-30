@@ -64,47 +64,54 @@ public class GUI extends Application {
     private static TableView generateTableForCD(){
         TableView tableView = new TableView();
 
-        TableColumn<String, MusicItem> itemID = new TableColumn<>("Item ID");
+        TableColumn<MusicItem, String> itemID = new TableColumn<>("Item ID");
         itemID.setCellValueFactory(new PropertyValueFactory<>("itemID"));
         tableView.getColumns().add(itemID);
 
-        TableColumn<String, MusicItem> title = new TableColumn<>("Title");
+        TableColumn<MusicItem, String> title = new TableColumn<>("Title");
         title.setCellValueFactory(new PropertyValueFactory<>("title"));
         tableView.getColumns().add(title);
 
-        TableColumn<String, MusicItem> genre = new TableColumn<>("Genre");
+        TableColumn<MusicItem, String> genre = new TableColumn<>("Genre");
         genre.setCellValueFactory(new PropertyValueFactory<>("genre"));
         tableView.getColumns().add(genre);
 
-        TableColumn<Date, MusicItem> releaseDate = new TableColumn<>("Release Date");
+        TableColumn<MusicItem, Date> releaseDate = new TableColumn<>("Release Date");
         releaseDate.setCellValueFactory(new PropertyValueFactory<>("releaseDate"));
         tableView.getColumns().add(releaseDate);
 
-        TableColumn<String, MusicItem> artist = new TableColumn<>("Artist");
+        TableColumn<MusicItem, String> artist = new TableColumn<>("Artist");
         artist.setCellValueFactory(new PropertyValueFactory<>("artist"));
         tableView.getColumns().add(artist);
 
-        TableColumn<BigDecimal, MusicItem> price = new TableColumn<>("Price");
+        TableColumn<MusicItem, BigDecimal> price = new TableColumn<>("Price");
         price.setCellValueFactory(new PropertyValueFactory<>("price"));
         tableView.getColumns().add(price);
 
-        TableColumn<ArrayList, CD> songs = new TableColumn<>("Songs");
+        TableColumn<CD, ArrayList> songs = new TableColumn<>("Songs");
         songs.setCellValueFactory(new PropertyValueFactory<>("songs"));
         tableView.getColumns().add(songs);
 
-        TableColumn<Integer, CD> totalDuration = new TableColumn<>("Total Duration");
+        TableColumn<CD, Integer> totalDuration = new TableColumn<>("Total Duration");
         totalDuration.setCellValueFactory(new PropertyValueFactory<>("totalDuration"));
         tableView.getColumns().add(totalDuration);
 
-        TableColumn<Integer, Vinyl> speed = new TableColumn<>("Speed");
+        TableColumn<Vinyl, Integer> speed = new TableColumn<>("Speed");
         speed.setCellValueFactory(new PropertyValueFactory<>("speed"));
         tableView.getColumns().add(speed);
 
         TableColumn<Vinyl, Double> diameter = new TableColumn<>("Diameter");
-        speed.setCellValueFactory(new PropertyValueFactory<>("diameter"));
+        diameter.setCellValueFactory(new PropertyValueFactory<>("diameter"));
         tableView.getColumns().add(diameter);
 
-
+        for(MusicItem item: WestminsterMusicStoreManager.getItems()){
+            if(item.getClass().getName().equals("Model.Items.Vinyl")){
+                tableView.getItems().add((Vinyl) item);
+            }
+            else{
+                tableView.getItems().add((CD) item);
+            }
+        }
 
         tableView.getItems().addAll( WestminsterMusicStoreManager.getItems());
 

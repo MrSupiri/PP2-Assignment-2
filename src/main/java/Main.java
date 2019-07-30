@@ -43,7 +43,7 @@ public class Main {
         int option;
 
         do {
-            option = getIntegerInput(">>> ", "\nERROR 406: Invalid Input\n");
+            option = getIntegerInput(">>> ", "ERROR 406: Invalid Input");
             // Switch case statement to map inputs to it's relevant methods
             switch (option) {
                 case 1:
@@ -73,7 +73,7 @@ public class Main {
                     break;
 
                 case 6:
-                    sellItems(manager);
+                    sellItems();
                     break;
 
                 case 7:
@@ -105,7 +105,7 @@ public class Main {
 
     }
 
-    private static void sellItems(StoreManager manager) {
+    private static void sellItems() {
         ArrayList<String> cart = new ArrayList<>();
         String itemID;
         BigDecimal total = BigDecimal.ZERO;
@@ -133,48 +133,47 @@ public class Main {
 
     // TODO: Handle Custom Exceptions
     private static void addItemToDatabase() {
-        System.out.print("What kind of Music Item you want to Add ? (CD/Vinyl): ");
         String type;
-        do {
+        System.out.print("What kind of Music Item you want to Add ? (CD/Vinyl): ");
+        type = sc.nextLine().toLowerCase();
+        while (!type.equals("cd") && !type.equals("vinyl")){
+            System.out.println("\n\tInvalid Input !");
+            System.out.print("What kind of Music Item you want to Add ? (CD/Vinyl): ");
             type = sc.nextLine().toLowerCase();
-        } while (!type.equals("cd") && !type.equals("vinyl"));
+        }
         System.out.printf("Name of the %s: ", type);
         String name = sc.nextLine();
         System.out.printf("Genre of the %s: ", type);
         String genre = sc.nextLine();
 
-        int releasedYear = getIntegerInput(String.format("Released year of this %s: ", type), "Invalid year!");
-        int releasedMonth = getIntegerInput(String.format("Released month of this %s: ", type), "Invalid month!");
-        int releasedDay = getIntegerInput(String.format("Released day of this %s: ", type), "Invalid day!");
-        Date releaseDate = new Date(releasedYear, releasedMonth, releasedDay);
+        Date releaseDate = getReleaseDate(type);
 
         System.out.printf("Artist of the %s: ", type);
         String artist = sc.nextLine();
 
         BigDecimal price = getBigDecimalInput(String.format("Price of the %s: ", type), "Invalid Price");
-
-        if (type.equals("cd")) {
-            CD cd = new CD(name, genre, releaseDate, artist, price);
-            System.out.println("Enter the song names and duration on the CD");
-            System.out.println("When you done adding enter -1 as the song name to exit\n");
-            String songName;
-            int i = 1;
-            do {
-                System.out.printf("Enter the song number %s of %s CD: ", i, name);
-                songName = sc.nextLine();
-                if (!songName.equals("-1"))
-                    cd.addSong(songName, getIntegerInput("Duration of the Song in seconds: ", "Invalid Duration"));
-                i++;
-            } while (!songName.equals("-1"));
-            manager.addItem(cd);
-            System.out.printf("%s CD was successfully added to the Database, Item ID - %s\n", name, cd.getItemID());
-        } else {
-            int speed = getIntegerInput("Speed of the Vinyl type in RPM: ", "Invalid RPM");
-            double diameter = getDoubleInput("Diameter of the Vinyl type in CM: ", "Invalid Diameter");
-            Vinyl vinyl = new Vinyl(name, genre, releaseDate, artist, price, speed, diameter);
-            manager.addItem(vinyl);
-            System.out.printf("%s vinyl record was successfully added to the Database, Item ID - %s\n", name, vinyl.getItemID());
-        }
+            if (type.equals("cd")) {
+                CD cd = new CD(name, genre, releaseDate, artist, price);
+                System.out.println("Enter the song names and duration on the CD");
+                System.out.println("When you done adding enter -1 as the song name to exit\n");
+                String songName;
+                int i = 1;
+                do {
+                    System.out.printf("Enter the song number %s of %s CD: ", i, name);
+                    songName = sc.nextLine();
+                    if (!songName.equals("-1"))
+                        cd.addSong(songName, getIntegerInput("Duration of the Song in seconds: ", "Invalid Duration"));
+                    i++;
+                } while (!songName.equals("-1"));
+                manager.addItem(cd);
+                System.out.printf("%s CD was successfully added to the Database, Item ID - %s\n", name, cd.getItemID());
+            } else {
+                int speed = getIntegerInput("Speed of the Vinyl type in RPM: ", "Invalid RPM", true);
+                double diameter = getDoubleInput("Diameter of the Vinyl type in CM: ", "Invalid Diameter", true);
+                Vinyl vinyl = new Vinyl(name, genre, releaseDate, artist, price, speed, diameter);
+                manager.addItem(vinyl);
+                System.out.printf("%s vinyl record was successfully added to the Database, Item ID - %s\n", name, vinyl.getItemID());
+            }
 
         displayMenu();
     }
@@ -224,11 +223,17 @@ public class Main {
         }
     }
 
+    // Help Methods
+
+    /**
+     * Return the Recommendation for Restock items
+     * @param sales - Number of sales done last month
+     * @return - number of copies need to buy
+     */
     private static int calculateStockRecommendation(int sales) {
         return (int) Math.ceil(sales + (sales * BUFFER_STOCK_PERCENTAGE / 100));
     }
 
-    // Help Methods
     private static void displayMenu() {
         System.out.println(" +---------------------------------------------------------+");
         System.out.println(" | 1 | Add a Item to them System                           |");
@@ -268,6 +273,12 @@ public class Main {
         return cal.getTime();
     }
 
+    /**
+     * prompt user again again till the user enters a Integer
+     * @param message - prompt message
+     * @param error - Error given when user enters a invalid number
+     * @return - number user input
+     */
     private static int getIntegerInput(String message, String error) {
         System.out.print(message);
         while (!sc.hasNextInt()) {
@@ -280,6 +291,23 @@ public class Main {
         return input;
     }
 
+    private static int getIntegerInput(String message, String error, Boolean nonNegative) {
+        System.out.print(message);
+        while (!sc.hasNextInt()) {
+            System.out.printf("\n\t%s\n\n", error);
+            System.out.print(message);
+            sc.nextLine();
+        }
+        int input = sc.nextInt();
+        sc.nextLine();
+        if(nonNegative && input < 0){
+            System.out.printf("\n\t%s\n\n", error);
+            input = getIntegerInput(message, error);
+        }
+        return input;
+    }
+
+    // Same as above but for BigDecimals
     private static BigDecimal getBigDecimalInput(String message, String error) {
         System.out.print(message);
         while (!sc.hasNextBigDecimal()) {
@@ -292,6 +320,7 @@ public class Main {
         return input;
     }
 
+    // Same as above but for Doubles
     private static double getDoubleInput(String message, String error) {
         System.out.print(message);
         while (!sc.hasNextDouble()) {
@@ -302,5 +331,34 @@ public class Main {
         double input = sc.nextDouble();
         sc.nextLine();
         return input;
+    }
+
+    private static double getDoubleInput(String message, String error, Boolean nonNegative) {
+        System.out.print(message);
+        while (!sc.hasNextDouble()) {
+            System.out.printf("\n\t%s\n\n", error);
+            System.out.print(message);
+            sc.nextLine();
+        }
+        double input = sc.nextDouble();
+        if(nonNegative && input < 0){
+            System.out.printf("\n\t%s\n\n", error);
+            input = getDoubleInput(message, error);
+        }
+        sc.nextLine();
+        return input;
+    }
+
+    private static Date getReleaseDate(String type){
+        try{
+            int releasedYear = getIntegerInput(String.format("Released year of this %s: ", type), "Invalid year!");
+            int releasedMonth = getIntegerInput(String.format("Released month of this %s: ", type), "Invalid month!");
+            int releasedDay = getIntegerInput(String.format("Released day of this %s: ", type), "Invalid day!");
+            return new Date(releasedYear, releasedMonth, releasedDay);
+        }catch (IllegalArgumentException e){
+            System.out.println("\n"+e.getMessage());
+            return getReleaseDate(type);
+        }
+
     }
 }
