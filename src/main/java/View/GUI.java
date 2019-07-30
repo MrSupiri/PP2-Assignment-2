@@ -8,6 +8,10 @@ import Model.Items.Vinyl;
 
 import javafx.application.Application;
 
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableDoubleValue;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -19,6 +23,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -88,31 +93,57 @@ public class GUI extends Application {
         price.setCellValueFactory(new PropertyValueFactory<>("price"));
         tableView.getColumns().add(price);
 
-        TableColumn<CD, ArrayList> songs = new TableColumn<>("Songs");
-        songs.setCellValueFactory(new PropertyValueFactory<>("songs"));
+        TableColumn<MusicItem, String> songs = new TableColumn<>("Songs");
+        songs.setCellValueFactory(p -> {
+            if(p.getValue().getClass().getName().equals("Model.Items.CD")){
+                CD item = (CD) p.getValue();
+                return new SimpleStringProperty(item.getSongs().toString().replace("[", "").replace("]", ""));
+            }
+            return new SimpleStringProperty("N/A");
+        });
         tableView.getColumns().add(songs);
 
-        TableColumn<CD, Integer> totalDuration = new TableColumn<>("Total Duration");
-        totalDuration.setCellValueFactory(new PropertyValueFactory<>("totalDuration"));
+        TableColumn<MusicItem, String> totalDuration = new TableColumn<>("Total Duration");
+        totalDuration.setCellValueFactory(p -> {
+            if(p.getValue().getClass().getName().equals("Model.Items.CD")){
+                CD item = (CD) p.getValue();
+                return new SimpleStringProperty(String.format("%s:%-2d mins", item.getTotalDuration()/60, item.getTotalDuration()%60));
+            }
+            return new SimpleStringProperty("N/A");
+        });
         tableView.getColumns().add(totalDuration);
 
-        TableColumn<Vinyl, Integer> speed = new TableColumn<>("Speed");
-        speed.setCellValueFactory(new PropertyValueFactory<>("speed"));
+        TableColumn<MusicItem, String> speed = new TableColumn<>("Speed");
+        speed.setCellValueFactory(p -> {
+            if(p.getValue().getClass().getName().equals("Model.Items.Vinyl")){
+                Vinyl item = (Vinyl) p.getValue();
+                return new SimpleStringProperty(Integer.toString(item.getSpeed()));
+            }
+            return new SimpleStringProperty("N/A");
+        });
         tableView.getColumns().add(speed);
 
-        TableColumn<Vinyl, Double> diameter = new TableColumn<>("Diameter");
-        diameter.setCellValueFactory(new PropertyValueFactory<>("diameter"));
+        TableColumn<MusicItem, String> diameter = new TableColumn<>("Diameter");
+        diameter.setCellValueFactory(p -> {
+            if(p.getValue().getClass().getName().equals("Model.Items.Vinyl")){
+                Vinyl item = (Vinyl) p.getValue();
+                return new SimpleStringProperty(Double.toString(item.getDiameter()));
+            }
+            return new SimpleStringProperty("N/A");
+        });
         tableView.getColumns().add(diameter);
 
-        for(MusicItem item: WestminsterMusicStoreManager.getItems()){
-            if(item.getClass().getName().equals("Model.Items.Vinyl")){
-                tableView.getItems().add((Vinyl) item);
-            }
-            else{
-                tableView.getItems().add((CD) item);
-            }
-        }
-
+//        for(MusicItem item: WestminsterMusicStoreManager.getItems()){
+//            if(item.getClass().getName().equals("Model.Items.Vinyl")){
+//                Vinyl vinyl = (Vinyl)  item;
+//                tableView.getItems().add(vinyl);
+//            }
+//            else{
+//                CD cd = (CD) item;
+//                tableView.getItems().add(cd);
+//            }
+//        }
+//
         tableView.getItems().addAll( WestminsterMusicStoreManager.getItems());
 
         return tableView;
