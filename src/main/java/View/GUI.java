@@ -53,7 +53,7 @@ public class GUI extends Application {
         hBox.setSpacing(30);
         VBox.setMargin(hBox, new Insets(50, 0, 30, 30));
 
-        table = generateTableForCD();
+        table = generateTable();
         VBox vBox = new VBox(hBox, table);
 
         Scene scene = new Scene(vBox, 1617, 616);
@@ -70,7 +70,7 @@ public class GUI extends Application {
 
     // http://tutorials.jenkov.com/javafx/tableview.html
     @SuppressWarnings("unchecked")
-    private static TableView generateTableForCD() {
+    private static TableView generateTable() {
         TableView tableView = new TableView();
 
         TableColumn<MusicItem, String> itemID = new TableColumn<>("Item ID");

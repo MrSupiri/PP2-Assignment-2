@@ -53,6 +53,7 @@ public class Main {
             }
         }.start();
 
+        // initialized the scanner on Utilities class
         Utilities.sc = new Scanner(System.in);
 
         System.out.println("\n\n");
