@@ -1,17 +1,14 @@
 package View;
 
+import Helpers.Date;
 import Model.Admins.WestminsterMusicStoreManager;
-import Model.Helpers.Date;
 import Model.Items.CD;
 import Model.Items.MusicItem;
 import Model.Items.Vinyl;
 
 import javafx.application.Application;
-
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableDoubleValue;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -23,14 +20,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 
 public class GUI extends Application {
     private static String searchTerm = "";
     private static TableView table;
+    private static Stage stage;
 
     public static void main() {
         launch();
@@ -38,11 +34,14 @@ public class GUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        // This will make sure JavaFX application is not destroyed when user click on the close button
+        Platform.setImplicitExit(false);
 
         Label searchBoxLabel = new Label("Find a Item");
         TextField searchBox = new TextField();
         searchBox.setPromptText("Enter the Name");
 
+        // This will execute anonymous function every time text in the searchBox changes
         //  https://stackoverflow.com/questions/30160899/value-change-listener-for-javafxs-textfield
         searchBox.textProperty().addListener((observable, oldValue, newValue) -> {
             searchTerm = newValue;
@@ -52,21 +51,26 @@ public class GUI extends Application {
         HBox hBox = new HBox(searchBoxLabel, searchBox);
         hBox.setAlignment(Pos.CENTER_LEFT);
         hBox.setSpacing(30);
-        VBox.setMargin(hBox, new Insets(50, 0 , 30, 30));
+        VBox.setMargin(hBox, new Insets(50, 0, 30, 30));
 
         table = generateTableForCD();
         VBox vBox = new VBox(hBox, table);
 
-        Scene scene = new Scene(vBox,  1617, 616);
-
+        Scene scene = new Scene(vBox, 1617, 616);
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(scene);
-        primaryStage.show();
+        stage = primaryStage;
+//        primaryStage.show();
+    }
+
+    // Show the JavaFX Application
+    public static void showStage(){
+        stage.show();
     }
 
     // http://tutorials.jenkov.com/javafx/tableview.html
     @SuppressWarnings("unchecked")
-    private static TableView generateTableForCD(){
+    private static TableView generateTableForCD() {
         TableView tableView = new TableView();
 
         TableColumn<MusicItem, String> itemID = new TableColumn<>("Item ID");
@@ -94,8 +98,11 @@ public class GUI extends Application {
         tableView.getColumns().add(price);
 
         TableColumn<MusicItem, String> songs = new TableColumn<>("Songs");
+        // As Every Music Item don't have songs attribute I create lambda function that will check the Object type
+        // and give different outputs to different object types
+        // Ex - Vinyl class don't have songs attribute so it will display Not Applicable for Row that contains Vinyl Objects
         songs.setCellValueFactory(p -> {
-            if(p.getValue().getClass().getName().equals("Model.Items.CD")){
+            if (p.getValue().getClass().getName().equals("Model.Items.CD")) {
                 CD item = (CD) p.getValue();
                 return new SimpleStringProperty(item.getSongs().toString().replace("[", "").replace("]", ""));
             }
@@ -105,9 +112,9 @@ public class GUI extends Application {
 
         TableColumn<MusicItem, String> totalDuration = new TableColumn<>("Total Duration");
         totalDuration.setCellValueFactory(p -> {
-            if(p.getValue().getClass().getName().equals("Model.Items.CD")){
+            if (p.getValue().getClass().getName().equals("Model.Items.CD")) {
                 CD item = (CD) p.getValue();
-                return new SimpleStringProperty(String.format("%s:%-2d mins", item.getTotalDuration()/60, item.getTotalDuration()%60));
+                return new SimpleStringProperty(String.format("%s:%-2d mins", item.getTotalDuration() / 60, item.getTotalDuration() % 60));
             }
             return new SimpleStringProperty("N/A");
         });
@@ -115,7 +122,7 @@ public class GUI extends Application {
 
         TableColumn<MusicItem, String> speed = new TableColumn<>("Speed");
         speed.setCellValueFactory(p -> {
-            if(p.getValue().getClass().getName().equals("Model.Items.Vinyl")){
+            if (p.getValue().getClass().getName().equals("Model.Items.Vinyl")) {
                 Vinyl item = (Vinyl) p.getValue();
                 return new SimpleStringProperty(Integer.toString(item.getSpeed()));
             }
@@ -125,7 +132,7 @@ public class GUI extends Application {
 
         TableColumn<MusicItem, String> diameter = new TableColumn<>("Diameter");
         diameter.setCellValueFactory(p -> {
-            if(p.getValue().getClass().getName().equals("Model.Items.Vinyl")){
+            if (p.getValue().getClass().getName().equals("Model.Items.Vinyl")) {
                 Vinyl item = (Vinyl) p.getValue();
                 return new SimpleStringProperty(Double.toString(item.getDiameter()));
             }
@@ -133,26 +140,19 @@ public class GUI extends Application {
         });
         tableView.getColumns().add(diameter);
 
-//        for(MusicItem item: WestminsterMusicStoreManager.getItems()){
-//            if(item.getClass().getName().equals("Model.Items.Vinyl")){
-//                Vinyl vinyl = (Vinyl)  item;
-//                tableView.getItems().add(vinyl);
-//            }
-//            else{
-//                CD cd = (CD) item;
-//                tableView.getItems().add(cd);
-//            }
-//        }
-//
-        tableView.getItems().addAll( WestminsterMusicStoreManager.getItems());
+        tableView.getItems().addAll(WestminsterMusicStoreManager.getItems());
 
         return tableView;
     }
 
-    private static void updateTable(){
+    /**
+     * This will clear the all the entries on the table insert only entries that match the searchTerm
+     */
+    private static void updateTable() {
         table.getItems().clear();
-        for(MusicItem item: WestminsterMusicStoreManager.getItems()){
-            if(item.getTitle().toLowerCase().contains(searchTerm.toLowerCase())){
+        for (MusicItem item : WestminsterMusicStoreManager.getItems()) {
+            if (item.getTitle().toLowerCase().contains(searchTerm.toLowerCase())) {
+                //noinspection unchecked
                 table.getItems().add(item);
             }
         }

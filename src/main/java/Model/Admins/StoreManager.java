@@ -1,9 +1,12 @@
 package Model.Admins;
 import Model.Items.MusicItem;
-
 import java.util.ArrayList;
 
+/*
+    Every Class implement this interface should have these essential methods
+ */
 public interface StoreManager {
+    @SuppressWarnings("unused")
     ArrayList<MusicItem> items = new ArrayList<>();
     void addItem(MusicItem item);
     boolean deleteItem(String itemId);

@@ -1,7 +1,8 @@
+import Helpers.Date;
+import Helpers.Utilities;
+
 import Model.Admins.StoreManager;
 import Model.Admins.WestminsterMusicStoreManager;
-import Model.Helpers.Date;
-import Model.Helpers.Utilities;
 import Model.Items.CD;
 import Model.Items.MusicItem;
 import Model.Items.Vinyl;
@@ -15,17 +16,22 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import javafx.application.Platform;
+
 import java.math.BigDecimal;
 import java.util.*;
 
-import static Model.Helpers.Utilities.*;
-
 @SuppressWarnings("SameParameterValue")
 public class Main {
+    // This number represent estimated sales growth percentage which is used to calculate restock numbers
     private static final double BUFFER_STOCK_PERCENTAGE = 60.0;
     private static StoreManager manager;
 
     public static void main(String[] args) {
+
+        // MONGODB Connection String, This get's the Database Host, User, Password from System environment variables
+        // which is defined in .env file and this files was checked out of version control so our credentials won't get
+        // compromised if we make this project open source
         String MONGODB_URI = String.format("mongodb://%s:%s@%s:27017/%s?retryWrites=true&w=majority",
                 System.getenv("MONGODB_USER"), System.getenv("MONGODB_PASSWORD"),
                 System.getenv("MONGODB_HOST"), System.getenv("MONGODB_DATABASE"));
@@ -33,7 +39,19 @@ public class Main {
         MongoClientURI uri = new MongoClientURI(MONGODB_URI);
         MongoClient mongoClient = new MongoClient(uri);
         MongoDatabase database = mongoClient.getDatabase(System.getenv("MONGODB_DATABASE"));
+
         manager = new WestminsterMusicStoreManager(database);
+
+        // Start the JavaFX UI and push it to background thread
+        // This is done to escape error that says JavaFX.Application.launch can't be called multiples times
+        // So that is initialized one time put on background thread so we can bring it to front ground when it's needed
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                GUI.main();
+            }
+        }.start();
 
         Utilities.sc = new Scanner(System.in);
 
@@ -47,7 +65,7 @@ public class Main {
         int option;
 
         do {
-            option = getIntegerInput(">>> ", "ERROR 406: Invalid Input");
+            option = Utilities.getIntegerInput(">>> ", "ERROR 406: Invalid Input");
             // Switch case statement to map inputs to it's relevant methods
             switch (option) {
                 case 1:
@@ -81,7 +99,8 @@ public class Main {
                     break;
 
                 case 7:
-                    GUI.main();
+                    // This Platform runLater is used to communicated with JavaFX Thread that's running on background thead
+                    Platform.runLater(GUI::showStage);
                     break;
 
                 case 8:
@@ -114,9 +133,11 @@ public class Main {
         String itemID;
         BigDecimal total = BigDecimal.ZERO;
         System.out.print("Enter the UUID of the Item you want to buy (enter -1 to exit) : ");
+
         itemID = Utilities.sc.nextLine();
 
         while (!itemID.equals("-1")) {
+            // searchItem will return null if the itemID was not found
             MusicItem item = manager.searchItem(itemID);
             if (item != null) {
                 total = total.add(item.getPrice());
@@ -135,46 +156,55 @@ public class Main {
             manager.sellItems(cart);
     }
 
-    // TODO: Handle Custom Exceptions
     private static void addItemToDatabase() {
+        // Type is defined here so it can be accessed by the while loop condition
         String type;
         System.out.print("What kind of Music Item you want to Add ? (CD/Vinyl): ");
+
         type = Utilities.sc.nextLine().toLowerCase();
         while (!type.equals("cd") && !type.equals("vinyl")){
             System.out.println("\n\tInvalid Input !");
             System.out.print("What kind of Music Item you want to Add ? (CD/Vinyl): ");
             type = Utilities.sc.nextLine().toLowerCase();
         }
+
         System.out.printf("Name of the %s: ", type);
         String name = Utilities.sc.nextLine();
         System.out.printf("Genre of the %s: ", type);
         String genre = Utilities.sc.nextLine();
 
-        Date releaseDate = getReleaseDate(type);
+        Date releaseDate = Utilities.getReleaseDate(type);
 
         System.out.printf("Artist of the %s: ", type);
         String artist = Utilities.sc.nextLine();
 
-        BigDecimal price = getBigDecimalInput(String.format("Price of the %s: ", type), "Invalid Price");
+        BigDecimal price = Utilities.getBigDecimalInput(String.format("Price of the %s: ", type), "Invalid Price");
             if (type.equals("cd")) {
+                // Create the CD Object
                 CD cd = new CD(name, genre, releaseDate, artist, price);
+
+                // Prompt user to enter the list of songs in the CD
                 System.out.println("Enter the song names and duration on the CD");
                 System.out.println("When you done adding enter -1 as the song name to exit\n");
                 String songName;
                 int i = 1;
+                // Loop will exit if the song name was -1
                 do {
                     System.out.printf("Enter the song number %s of %s CD: ", i, name);
                     songName = Utilities.sc.nextLine();
                     if (!songName.equals("-1"))
-                        cd.addSong(songName, getIntegerInput("Duration of the Song in seconds: ", "Invalid Duration"));
+                        cd.addSong(songName, Utilities.getIntegerInput("Duration of the Song in seconds: ", "Invalid Duration"));
                     i++;
                 } while (!songName.equals("-1"));
+
                 manager.addItem(cd);
                 System.out.printf("%s CD was successfully added to the Database, Item ID - %s\n", name, cd.getItemID());
             } else {
-                int speed = getIntegerInput("Speed of the Vinyl type in RPM: ", "Invalid RPM", true);
-                double diameter = getDoubleInput("Diameter of the Vinyl type in CM: ", "Invalid Diameter", true);
+                int speed = Utilities.getIntegerInput("Speed of the Vinyl type in RPM: ", "Invalid RPM", true);
+                double diameter = Utilities.getDoubleInput("Diameter of the Vinyl type in CM: ", "Invalid Diameter", true);
+
                 Vinyl vinyl = new Vinyl(name, genre, releaseDate, artist, price, speed, diameter);
+
                 manager.addItem(vinyl);
                 System.out.printf("%s vinyl record was successfully added to the Database, Item ID - %s\n", name, vinyl.getItemID());
             }
@@ -191,7 +221,7 @@ public class Main {
         HashMap<String, Integer> items = new HashMap<>();
 
         // https://stackoverflow.com/questions/6840540/java-mongodb-query-by-date
-        Bson filter = new Document("$gte", firstOfLastMonth()).append("$lt", firstOfThisMonth());
+        Bson filter = new Document("$gte", Utilities.firstOfLastMonth()).append("$lt", Utilities.firstOfThisMonth());
 
         salesLog.find(new Document("timeOfPurchase", filter)).forEach((Block<Document>) document -> {
             String itemID = document.getString("itemID");

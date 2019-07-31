@@ -1,5 +1,8 @@
-package Model.Helpers;
+package Helpers;
 
+/**
+ * Simple Class That hold year, month and day
+ */
 public class Date {
     private int year;
     private int month;

@@ -1,6 +1,6 @@
 package Model.Admins;
+import Helpers.Date;
 
-import Model.Helpers.Date;
 import Model.Items.CD;
 import Model.Items.MusicItem;
 import Model.Items.Vinyl;
@@ -21,11 +21,18 @@ import static com.mongodb.client.model.Filters.eq;
 
 // https://mongodb.github.io/mongo-java-driver/3.11/driver/getting-started/quick-start/
 @SuppressWarnings("unchecked")
+/*
+  This class implements StoreManager and Handle all most all the use cases
+ */
 public class WestminsterMusicStoreManager implements StoreManager {
     private static ArrayList<MusicItem> items = new ArrayList<>();
     private MongoCollection<Document> musicItemCollection;
     private MongoDatabase database;
 
+    /**
+     * Initialed the WestminsterMusicStoreManager by fetching data from the database and making the items list
+     * @param database - MongoDB Database Object that was initialized in Main Class
+     */
     public WestminsterMusicStoreManager(MongoDatabase database) {
         this.database = database;
         musicItemCollection = this.database.getCollection("MusicItem");
@@ -68,7 +75,10 @@ public class WestminsterMusicStoreManager implements StoreManager {
 
     }
 
-    // TODO: This need to hold max of 1000 items
+    /**
+     * Add new Music Item to the items list and Save it on the database
+     * @param item - Music Item that need to be added
+     */
     @Override
     public void addItem(MusicItem item) {
         if(items.size() > 1000){
@@ -102,6 +112,10 @@ public class WestminsterMusicStoreManager implements StoreManager {
         musicItemCollection.insertOne(doc);
     }
 
+    /**
+     * Remove Music Item from items list and delete it from the database
+     * @param itemId - UUID of Music Item that need to be added
+     */
     @Override
     public boolean deleteItem(String itemId) {
         for (MusicItem item : items) {
@@ -114,6 +128,9 @@ public class WestminsterMusicStoreManager implements StoreManager {
         return false;
     }
 
+    /**
+     * Print out a table that contains Detailed description of every Item in the store
+     */
     @Override
     public void listItems(){
         String format = "| %-3s | %-32s | %-25s | %-10s | %-12s | %-17s | %-9s | %-18s | %-14s | %-5s | %-8s |%n";
@@ -140,6 +157,9 @@ public class WestminsterMusicStoreManager implements StoreManager {
         }
     }
 
+    /**
+     * Print out a table that contains Basic details of every Item in the store
+     */
     @Override
     public void itemSummary(){
         String format = "| %-3s | %-32s | %-25s | %-6s |\n";
@@ -157,11 +177,19 @@ public class WestminsterMusicStoreManager implements StoreManager {
         }
     }
 
+    /**
+     * Sort Every Item in the items array by it's title in ascending order
+     * Inspired from https://beginnersbook.com/2013/12/java-string-comparetoignorecase-method-example/
+     */
     @Override
     public void sortItems() {
         items.sort((item1, item2) -> item1.getTitle().compareToIgnoreCase(item2.getTitle()));
     }
 
+    /**
+     * Add a list of items salesLog collection in the database and write it to salesLog.csv to later analyzing
+     * @param items - List of Music Items IDs
+     */
     @Override
     public void sellItems(ArrayList<String> items) {
         MongoCollection<Document> salesLog = this.database.getCollection("salesLog");
@@ -192,6 +220,11 @@ public class WestminsterMusicStoreManager implements StoreManager {
         }
     }
 
+    /**
+     * Return Music Item as Object given a itemID
+     * @param itemID - UUID of the Item you want to find
+     * @return Item Object, This returns null if it didn't find a match
+     */
     @Override
     public MusicItem searchItem(String itemID) {
         for(MusicItem item: items){
@@ -202,6 +235,10 @@ public class WestminsterMusicStoreManager implements StoreManager {
         return null;
     }
 
+    /**
+     * Getter for items ArrayList
+     * @return - ArrayList of Music Items
+     */
     public static ArrayList<MusicItem> getItems(){
         return items;
     }
