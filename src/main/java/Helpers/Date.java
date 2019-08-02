@@ -8,7 +8,6 @@ public class Date {
     private int month;
     private int day;
 
-    // TODO : More Validation
     public Date(int year, int month, int day) {
         this.setYear(year);
         this.setMonth(month);
@@ -39,10 +38,26 @@ public class Date {
     }
 
     private void setDay(int day) {
-        if(day > 0 && day <= 31)
+        if(this.month == 2){
+            if(this.year % 4 == 0){
+                if(day > 0 && day <= 29)
+                    this.day = day;
+                else
+                    throw  new IllegalArgumentException("Day should be in range of 1-29");
+            }
+            else{
+                if(day > 0 && day <= 28)
+                    this.day = day;
+                else
+                    throw  new IllegalArgumentException("Day should be in range of 1-28");
+            }
+        }
+        else if(day > 0 && day <= 31){
             this.day = day;
-        else
+        }
+        else{
             throw  new IllegalArgumentException("Day should be in range of 1-31");
+        }
     }
 
     @Override
