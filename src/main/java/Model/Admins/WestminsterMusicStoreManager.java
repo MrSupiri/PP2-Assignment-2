@@ -1,6 +1,7 @@
 package Model.Admins;
 import Helpers.Date;
 
+import Helpers.NoSpaceLeftInStoreException;
 import Model.Items.CD;
 import Model.Items.MusicItem;
 import Model.Items.Vinyl;
@@ -26,6 +27,7 @@ import static com.mongodb.client.model.Filters.eq;
  */
 public class WestminsterMusicStoreManager implements StoreManager {
     private static ArrayList<MusicItem> items = new ArrayList<>();
+    private static final int MAX_COUNT = 1000;
     private MongoCollection<Document> musicItemCollection;
     private MongoDatabase database;
 
@@ -81,8 +83,8 @@ public class WestminsterMusicStoreManager implements StoreManager {
      */
     @Override
     public void addItem(MusicItem item) {
-        if(items.size() > 1000){
-            throw new ArrayStoreException("There is no space to store more than 1000 items");
+        if(items.size() > MAX_COUNT){
+            throw new NoSpaceLeftInStoreException("There is no space to store more than 1000 items");
         }
 
         items.add(item);
@@ -116,6 +118,7 @@ public class WestminsterMusicStoreManager implements StoreManager {
      * Remove Music Item from items list and delete it from the database
      * @param itemId - UUID of Music Item that need to be added
      */
+    // TODO: Show space left
     @Override
     public boolean deleteItem(String itemId) {
         for (MusicItem item : items) {
