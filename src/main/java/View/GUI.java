@@ -97,18 +97,18 @@ public class GUI extends Application {
         price.setCellValueFactory(new PropertyValueFactory<>("price"));
         tableView.getColumns().add(price);
 
-        TableColumn<MusicItem, String> songs = new TableColumn<>("Songs");
-        // As Every Music Item don't have songs attribute I create lambda function that will check the Object type
-        // and give different outputs to different object types
-        // Ex - Vinyl class don't have songs attribute so it will display Not Applicable for Row that contains Vinyl Objects
-        songs.setCellValueFactory(p -> {
-            if (p.getValue().getClass().getName().equals("Model.Items.CD")) {
-                CD item = (CD) p.getValue();
-                return new SimpleStringProperty(item.getSongs().toString().replace("[", "").replace("]", ""));
-            }
-            return new SimpleStringProperty("N/A");
-        });
-        tableView.getColumns().add(songs);
+//        TableColumn<MusicItem, String> songs = new TableColumn<>("Songs");
+//        // As Every Music Item don't have songs attribute I create lambda function that will check the Object type
+//        // and give different outputs to different object types
+//        // Ex - Vinyl class don't have songs attribute so it will display Not Applicable for Row that contains Vinyl Objects
+//        songs.setCellValueFactory(p -> {
+//            if (p.getValue().getClass().getName().equals("Model.Items.CD")) {
+//                CD item = (CD) p.getValue();
+//                return new SimpleStringProperty(item.getSongs().toString().replace("[", "").replace("]", ""));
+//            }
+//            return new SimpleStringProperty("N/A");
+//        });
+//        tableView.getColumns().add(songs);
 
         TableColumn<MusicItem, String> totalDuration = new TableColumn<>("Total Duration");
         totalDuration.setCellValueFactory(p -> {

@@ -179,30 +179,30 @@ public class Main {
         System.out.printf("Artist of the %s: ", type);
         String artist = Utilities.sc.nextLine();
 
+        int totalDuration = Utilities.getIntegerInput("Enter Total Duration of the CD in seconds: ", "Invalid Duration");
+
         BigDecimal price = Utilities.getBigDecimalInput(String.format("Price of the %s: ", type), "Invalid Price");
             if (type.equals("cd")) {
                 // Create the CD Object
-                CD cd = new CD(name, genre, releaseDate, artist, price);
-
-                // Prompt user to enter the list of songs in the CD
-                System.out.println("Enter the song names and duration on the CD");
-                System.out.println("When you done adding enter -1 as the song name to exit\n");
-                String songName;
-                int i = 1;
-                // Loop will exit if the song name was -1
-                do {
-                    System.out.printf("Enter the song number %s of %s CD: ", i, name);
-                    songName = Utilities.sc.nextLine();
-                    if (!songName.equals("-1"))
-                        cd.addSong(songName, Utilities.getIntegerInput("Duration of the Song in seconds: ", "Invalid Duration"));
-                    i++;
-                } while (!songName.equals("-1"));
-
+                CD cd = new CD(name, genre, releaseDate, artist, price, totalDuration);
+//                // Prompt user to enter the list of songs in the CD
+//                System.out.println("Enter the song names and duration on the CD");
+//                System.out.println("When you done adding enter -1 as the song name to exit\n");
+//                String songName;
+//                int i = 1;
+//                // Loop will exit if the song name was -1
+//                do {
+//                    System.out.printf("Enter the song number %s of %s CD: ", i, name);
+//                    songName = Utilities.sc.nextLine();
+//                    if (!songName.equals("-1"))
+//                        cd.addSong(songName, Utilities.getIntegerInput("Duration of the Song in seconds: ", "Invalid Duration"));
+//                    i++;
+//                } while (!songName.equals("-1"));
                 manager.addItem(cd);
                 System.out.printf("%s CD was successfully added to the Database, Item ID - %s\n", name, cd.getItemID());
             } else {
-                int speed = Utilities.getIntegerInput("Speed of the Vinyl type in RPM: ", "Invalid RPM", true);
-                double diameter = Utilities.getDoubleInput("Diameter of the Vinyl type in CM: ", "Invalid Diameter", true);
+                int speed = Utilities.getIntegerInput("Speed of the Vinyl type (in rpm): ", "Invalid RPM", true);
+                double diameter = Utilities.getDoubleInput("Diameter of the Vinyl type (in cm): ", "Invalid Diameter", true);
 
                 Vinyl vinyl = new Vinyl(name, genre, releaseDate, artist, price, speed, diameter);
 

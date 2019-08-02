@@ -128,7 +128,7 @@ public  class Utilities {
             int releasedDay = getIntegerInput(String.format("Released day of this %s: ", type), "Invalid day!");
             return new Date(releasedYear, releasedMonth, releasedDay);
         }catch (IllegalArgumentException e){
-            System.out.println("\n"+e.getMessage());
+            System.out.println("\n\t"+e.getMessage()+"\n");
             return getReleaseDate(type);
         }
     }

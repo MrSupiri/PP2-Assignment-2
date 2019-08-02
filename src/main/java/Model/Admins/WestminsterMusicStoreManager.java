@@ -67,7 +67,6 @@ public class WestminsterMusicStoreManager implements StoreManager {
                                         date.getInteger("day")),
                                 document.getString("artist"),
                                 ((Decimal128) document.get("price")).bigDecimalValue(),
-                                (ArrayList<String>) document.get("songs"),
                                 document.getInteger("totalDuration")
 
                         )
@@ -106,9 +105,8 @@ public class WestminsterMusicStoreManager implements StoreManager {
         }
         else{
             CD cd = (CD) item;
-            doc.append("songs", cd.getSongs())
-                    .append("totalDuration", cd.getTotalDuration())
-                    .append("type", "CD");
+            doc.append("type", "CD")
+                    .append("totalDuration", cd.getTotalDuration());
         }
 
         musicItemCollection.insertOne(doc);
@@ -125,7 +123,7 @@ public class WestminsterMusicStoreManager implements StoreManager {
             if (item.getItemID().equals(itemId)) {
                 items.remove(item);
                 musicItemCollection.deleteOne(eq("itemID", itemId));
-                System.out.printf("You can add %s more items to the database", MAX_COUNT-(items.size()+1));
+                System.out.printf("You can add %s more items to the database\n", MAX_COUNT-(items.size()+1));
                 return true;
             }
         }
@@ -137,24 +135,21 @@ public class WestminsterMusicStoreManager implements StoreManager {
      */
     @Override
     public void listItems(){
-        String format = "| %-3s | %-32s | %-25s | %-10s | %-12s | %-17s | %-9s | %-18s | %-14s | %-5s | %-8s |%n";
+        String format = "| %-3s | %-32s | %-25s | %-10s | %-12s | %-17s | %-9s | %-14s | %-5s | %-8s |%n";
 
-        System.out.println("+-----+----------------------------------+---------------------------+------------+--------------+-------------------+-----------+--------------------+----------------+-------+----------+");
-        System.out.println("|  #  |             Item UUID            |            Title          | Genre      | Release Date |       Artist      |   Price   |        Songs       | Total Duration | Speed | Diameter |");
-        System.out.println("+-----+----------------------------------+---------------------------+------------+--------------+-------------------+-----------+--------------------+----------------+-------+----------+");
+        System.out.println("+-----+----------------------------------+---------------------------+------------+--------------+-------------------+-----------+----------------+-------+----------+");
+        System.out.println("|  #  |             Item UUID            |            Title          | Genre      | Release Date |       Artist      |   Price   | Total Duration | Speed | Diameter |");
+        System.out.println("+-----+----------------------------------+---------------------------+------------+--------------+-------------------+-----------+----------------+-------+----------+");
 
         int index = 1;
         for(MusicItem item: items){
             if(item.getClass().getName().equals("Model.Items.CD")){
                 CD cd = (CD) item;
-                System.out.printf(format, index, cd.getItemID(), cd.getTitle(), cd.getGenre(), cd.getReleaseDate(), cd.getArtist(), "USD "+cd.getPrice(), cd.getSongs().get(0), String.format("%s:%-2d mins", cd.getTotalDuration()/60, cd.getTotalDuration()%60),  "-", "-");
-                for(int y=1; y<cd.getSongs().size(); y++){
-                    System.out.printf(format, "", "", "", "", "", "", "", cd.getSongs().get(y), "", "", "");
-                }
+                System.out.printf(format, index, cd.getItemID(), cd.getTitle(), cd.getGenre(), cd.getReleaseDate(), cd.getArtist(), "USD "+cd.getPrice(), String.format("%s:%-2d mins", cd.getTotalDuration()/60, cd.getTotalDuration()%60),  "-", "-");
             }
             else{
                 Vinyl vinyl = (Vinyl) item;
-                System.out.printf(format, index, vinyl.getItemID(), vinyl.getTitle(), vinyl.getGenre(), vinyl.getReleaseDate(), vinyl.getArtist(), "USD "+vinyl.getPrice(), "-", "-", vinyl.getSpeed(), vinyl.getDiameter());
+                System.out.printf(format, index, vinyl.getItemID(), vinyl.getTitle(), vinyl.getGenre(), vinyl.getReleaseDate(), vinyl.getArtist(), "USD "+vinyl.getPrice(), "-", vinyl.getSpeed(), vinyl.getDiameter());
             }
             System.out.println("+-----+----------------------------------+---------------------------+------------+--------------+-------------------+-----------+--------------------+----------------+-------+----------+");
             index++;
