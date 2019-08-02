@@ -116,15 +116,16 @@ public class WestminsterMusicStoreManager implements StoreManager {
 
     /**
      * Remove Music Item from items list and delete it from the database
+     * This also display how much space is left
      * @param itemId - UUID of Music Item that need to be added
      */
-    // TODO: Show space left
     @Override
     public boolean deleteItem(String itemId) {
         for (MusicItem item : items) {
             if (item.getItemID().equals(itemId)) {
                 items.remove(item);
                 musicItemCollection.deleteOne(eq("itemID", itemId));
+                System.out.printf("You can add %s more items to the database", MAX_COUNT-(items.size()+1));
                 return true;
             }
         }
