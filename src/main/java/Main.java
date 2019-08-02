@@ -163,7 +163,7 @@ public class Main {
         System.out.print("What kind of Music Item you want to Add ? (CD/Vinyl): ");
 
         type = Utilities.sc.nextLine().toLowerCase();
-        while (!type.equals("cd") && !type.equals("vinyl")){
+        while (!type.equals("cd") && !type.equals("vinyl")) {
             System.out.println("\n\tInvalid Input !");
             System.out.print("What kind of Music Item you want to Add ? (CD/Vinyl): ");
             type = Utilities.sc.nextLine().toLowerCase();
@@ -179,36 +179,36 @@ public class Main {
         System.out.printf("Artist of the %s: ", type);
         String artist = Utilities.sc.nextLine();
 
-        int totalDuration = Utilities.getIntegerInput("Enter Total Duration of the CD in seconds: ", "Invalid Duration");
 
         BigDecimal price = Utilities.getBigDecimalInput(String.format("Price of the %s: ", type), "Invalid Price");
-            if (type.equals("cd")) {
-                // Create the CD Object
-                CD cd = new CD(name, genre, releaseDate, artist, price, totalDuration);
-//                // Prompt user to enter the list of songs in the CD
-//                System.out.println("Enter the song names and duration on the CD");
-//                System.out.println("When you done adding enter -1 as the song name to exit\n");
-//                String songName;
-//                int i = 1;
-//                // Loop will exit if the song name was -1
-//                do {
-//                    System.out.printf("Enter the song number %s of %s CD: ", i, name);
-//                    songName = Utilities.sc.nextLine();
-//                    if (!songName.equals("-1"))
-//                        cd.addSong(songName, Utilities.getIntegerInput("Duration of the Song in seconds: ", "Invalid Duration"));
-//                    i++;
-//                } while (!songName.equals("-1"));
-                manager.addItem(cd);
-                System.out.printf("%s CD was successfully added to the Database, Item ID - %s\n", name, cd.getItemID());
-            } else {
-                int speed = Utilities.getIntegerInput("Speed of the Vinyl type (in rpm): ", "Invalid RPM", true);
-                double diameter = Utilities.getDoubleInput("Diameter of the Vinyl type (in cm): ", "Invalid Diameter", true);
+        if (type.equals("cd")) {
+            int totalDuration = Utilities.getIntegerInput("Enter Total Duration of the CD in seconds: ", "Invalid Duration");
+            // Create the CD Object
+            CD cd = new CD(name, genre, releaseDate, artist, price, totalDuration);
+//            // Prompt user to enter the list of songs in the CD
+//            System.out.println("Enter the song names and duration on the CD");
+//            System.out.println("When you done adding enter -1 as the song name to exit\n");
+//            String songName;
+//            int i = 1;
+//            // Loop will exit if the song name was -1
+//            do {
+//                System.out.printf("Enter the song number %s of %s CD: ", i, name);
+//                songName = Utilities.sc.nextLine();
+//                if (!songName.equals("-1"))
+//                    cd.addSong(songName, Utilities.getIntegerInput("Duration of the Song in seconds: ", "Invalid Duration"));
+//                i++;
+//            } while (!songName.equals("-1"));
+            manager.addItem(cd);
+            System.out.printf("%s CD was successfully added to the Database, Item ID - %s\n", name, cd.getItemID());
+        } else {
+            int speed = Utilities.getIntegerInput("Speed of the Vinyl type (in rpm): ", "Invalid RPM", true);
+            double diameter = Utilities.getDoubleInput("Diameter of the Vinyl type (in cm): ", "Invalid Diameter", true);
 
-                Vinyl vinyl = new Vinyl(name, genre, releaseDate, artist, price, speed, diameter);
+            Vinyl vinyl = new Vinyl(name, genre, releaseDate, artist, price, speed, diameter);
 
-                manager.addItem(vinyl);
-                System.out.printf("%s vinyl record was successfully added to the Database, Item ID - %s\n", name, vinyl.getItemID());
-            }
+            manager.addItem(vinyl);
+            System.out.printf("%s vinyl record was successfully added to the Database, Item ID - %s\n", name, vinyl.getItemID());
+        }
 
         displayMenu();
     }
@@ -262,6 +262,7 @@ public class Main {
 
     /**
      * Return the Recommendation for Restock items
+     *
      * @param sales - Number of sales done last month
      * @return - number of copies need to buy
      */

@@ -21,7 +21,6 @@ import java.util.List;
 import static com.mongodb.client.model.Filters.eq;
 
 // https://mongodb.github.io/mongo-java-driver/3.11/driver/getting-started/quick-start/
-@SuppressWarnings("unchecked")
 /*
   This class implements StoreManager and Handle all most all the use cases
  */
@@ -151,7 +150,7 @@ public class WestminsterMusicStoreManager implements StoreManager {
                 Vinyl vinyl = (Vinyl) item;
                 System.out.printf(format, index, vinyl.getItemID(), vinyl.getTitle(), vinyl.getGenre(), vinyl.getReleaseDate(), vinyl.getArtist(), "USD "+vinyl.getPrice(), "-", vinyl.getSpeed(), vinyl.getDiameter());
             }
-            System.out.println("+-----+----------------------------------+---------------------------+------------+--------------+-------------------+-----------+--------------------+----------------+-------+----------+");
+            System.out.println("+-----+----------------------------------+---------------------------+------------+--------------+-------------------+-----------+----------------+-------+----------+");
             index++;
         }
     }
