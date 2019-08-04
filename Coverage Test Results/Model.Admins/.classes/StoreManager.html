@@ -1,0 +1,63 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: StoreManager</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">Model.Admins</a> ]
+</div>
+
+<h1>Coverage Summary for Class: StoreManager (Model.Admins)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">StoreManager</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package Model.Admins;
+<i>2</i>&nbsp;import Model.Items.MusicItem;
+<i>3</i>&nbsp;import java.util.ArrayList;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;/*
+<i>6</i>&nbsp;    Every Class implement this interface should have these essential methods
+<i>7</i>&nbsp; */
+<i>8</i>&nbsp;public interface StoreManager {
+<i>9</i>&nbsp;    void addItem(MusicItem item);
+<i>10</i>&nbsp;    boolean deleteItem(String itemId);
+<i>11</i>&nbsp;    void listItems();
+<i>12</i>&nbsp;    void itemSummary();
+<i>13</i>&nbsp;    void sortItems();
+<i>14</i>&nbsp;    MusicItem searchItem(String itemID);
+<i>15</i>&nbsp;    void sellItems(ArrayList&lt;String&gt; items);
+<i>16</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-08-04 22:32</div>
+</div>
+</body>
+</html>

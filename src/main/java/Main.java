@@ -182,7 +182,7 @@ public class Main {
 
         BigDecimal price = Utilities.getBigDecimalInput(String.format("Price of the %s: ", type), "Invalid Price");
         if (type.equals("cd")) {
-            int totalDuration = Utilities.getIntegerInput("Enter Total Duration of the CD in seconds: ", "Invalid Duration");
+            int totalDuration = Utilities.getIntegerInput("Enter Total Duration of the CD in seconds: ", "Invalid Duration", true);
             // Create the CD Object
             CD cd = new CD(name, genre, releaseDate, artist, price, totalDuration);
 //            // Prompt user to enter the list of songs in the CD

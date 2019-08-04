@@ -1,0 +1,245 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GUI</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">View</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GUI (View)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GUI</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/ 11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98.6%
+  </span>
+  <span class="absValue">
+    (73/ 74)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package View;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import Helpers.Date;
+<i>4</i>&nbsp;import Model.Admins.WestminsterMusicStoreManager;
+<i>5</i>&nbsp;import Model.Items.CD;
+<i>6</i>&nbsp;import Model.Items.MusicItem;
+<i>7</i>&nbsp;import Model.Items.Vinyl;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import javafx.application.Application;
+<i>10</i>&nbsp;import javafx.application.Platform;
+<i>11</i>&nbsp;import javafx.beans.property.SimpleStringProperty;
+<i>12</i>&nbsp;import javafx.geometry.Insets;
+<i>13</i>&nbsp;import javafx.geometry.Pos;
+<i>14</i>&nbsp;import javafx.scene.Scene;
+<i>15</i>&nbsp;import javafx.scene.control.Label;
+<i>16</i>&nbsp;import javafx.scene.control.TableColumn;
+<i>17</i>&nbsp;import javafx.scene.control.TableView;
+<i>18</i>&nbsp;import javafx.scene.control.TextField;
+<i>19</i>&nbsp;import javafx.scene.control.cell.PropertyValueFactory;
+<i>20</i>&nbsp;import javafx.scene.layout.HBox;
+<i>21</i>&nbsp;import javafx.scene.layout.VBox;
+<i>22</i>&nbsp;import javafx.stage.Stage;
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;import java.math.BigDecimal;
+<i>25</i>&nbsp;
+<b class="fc"><i>26</i>&nbsp;public class GUI extends Application {</b>
+<b class="fc"><i>27</i>&nbsp;    private static String searchTerm = &quot;&quot;;</b>
+<i>28</i>&nbsp;    private static TableView table;
+<i>29</i>&nbsp;    private static Stage stage;
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    public static void main() {
+<b class="fc"><i>32</i>&nbsp;        launch();</b>
+<b class="nc"><i>33</i>&nbsp;    }</b>
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    @Override
+<i>36</i>&nbsp;    public void start(Stage primaryStage) {
+<i>37</i>&nbsp;        // This will make sure JavaFX application is not destroyed when user click on the close button
+<b class="fc"><i>38</i>&nbsp;        Platform.setImplicitExit(false);</b>
+<i>39</i>&nbsp;
+<b class="fc"><i>40</i>&nbsp;        Label searchBoxLabel = new Label(&quot;Find a Item&quot;);</b>
+<b class="fc"><i>41</i>&nbsp;        TextField searchBox = new TextField();</b>
+<b class="fc"><i>42</i>&nbsp;        searchBox.setPromptText(&quot;Enter the Name&quot;);</b>
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;        // This will execute anonymous function every time text in the searchBox changes
+<i>45</i>&nbsp;        //  https://stackoverflow.com/questions/30160899/value-change-listener-for-javafxs-textfield
+<b class="fc"><i>46</i>&nbsp;        searchBox.textProperty().addListener((observable, oldValue, newValue) -&gt; {</b>
+<b class="fc"><i>47</i>&nbsp;            searchTerm = newValue;</b>
+<b class="fc"><i>48</i>&nbsp;            updateTable();</b>
+<b class="fc"><i>49</i>&nbsp;        });</b>
+<i>50</i>&nbsp;
+<b class="fc"><i>51</i>&nbsp;        HBox hBox = new HBox(searchBoxLabel, searchBox);</b>
+<b class="fc"><i>52</i>&nbsp;        hBox.setAlignment(Pos.CENTER_LEFT);</b>
+<b class="fc"><i>53</i>&nbsp;        hBox.setSpacing(30);</b>
+<b class="fc"><i>54</i>&nbsp;        VBox.setMargin(hBox, new Insets(50, 0, 30, 30));</b>
+<i>55</i>&nbsp;
+<b class="fc"><i>56</i>&nbsp;        table = generateTable();</b>
+<b class="fc"><i>57</i>&nbsp;        VBox vBox = new VBox(hBox, table);</b>
+<i>58</i>&nbsp;
+<b class="fc"><i>59</i>&nbsp;        Scene scene = new Scene(vBox, 1617, 616);</b>
+<b class="fc"><i>60</i>&nbsp;        primaryStage.setTitle(&quot;Hello World&quot;);</b>
+<b class="fc"><i>61</i>&nbsp;        primaryStage.setScene(scene);</b>
+<b class="fc"><i>62</i>&nbsp;        stage = primaryStage;</b>
+<i>63</i>&nbsp;//        primaryStage.show();
+<b class="fc"><i>64</i>&nbsp;    }</b>
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    // Show the JavaFX Application
+<i>67</i>&nbsp;    public static void showStage(){
+<b class="fc"><i>68</i>&nbsp;        stage.show();</b>
+<b class="fc"><i>69</i>&nbsp;    }</b>
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;    // http://tutorials.jenkov.com/javafx/tableview.html
+<i>72</i>&nbsp;    @SuppressWarnings(&quot;unchecked&quot;)
+<i>73</i>&nbsp;    private static TableView generateTable() {
+<b class="fc"><i>74</i>&nbsp;        TableView tableView = new TableView();</b>
+<i>75</i>&nbsp;
+<b class="fc"><i>76</i>&nbsp;        TableColumn&lt;MusicItem, String&gt; itemID = new TableColumn&lt;&gt;(&quot;Item ID&quot;);</b>
+<b class="fc"><i>77</i>&nbsp;        itemID.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;itemID&quot;));</b>
+<b class="fc"><i>78</i>&nbsp;        tableView.getColumns().add(itemID);</b>
+<i>79</i>&nbsp;
+<b class="fc"><i>80</i>&nbsp;        TableColumn&lt;MusicItem, String&gt; title = new TableColumn&lt;&gt;(&quot;Title&quot;);</b>
+<b class="fc"><i>81</i>&nbsp;        title.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;title&quot;));</b>
+<b class="fc"><i>82</i>&nbsp;        tableView.getColumns().add(title);</b>
+<i>83</i>&nbsp;
+<b class="fc"><i>84</i>&nbsp;        TableColumn&lt;MusicItem, String&gt; genre = new TableColumn&lt;&gt;(&quot;Genre&quot;);</b>
+<b class="fc"><i>85</i>&nbsp;        genre.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;genre&quot;));</b>
+<b class="fc"><i>86</i>&nbsp;        tableView.getColumns().add(genre);</b>
+<i>87</i>&nbsp;
+<b class="fc"><i>88</i>&nbsp;        TableColumn&lt;MusicItem, Date&gt; releaseDate = new TableColumn&lt;&gt;(&quot;Release Date&quot;);</b>
+<b class="fc"><i>89</i>&nbsp;        releaseDate.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;releaseDate&quot;));</b>
+<b class="fc"><i>90</i>&nbsp;        tableView.getColumns().add(releaseDate);</b>
+<i>91</i>&nbsp;
+<b class="fc"><i>92</i>&nbsp;        TableColumn&lt;MusicItem, String&gt; artist = new TableColumn&lt;&gt;(&quot;Artist&quot;);</b>
+<b class="fc"><i>93</i>&nbsp;        artist.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;artist&quot;));</b>
+<b class="fc"><i>94</i>&nbsp;        tableView.getColumns().add(artist);</b>
+<i>95</i>&nbsp;
+<b class="fc"><i>96</i>&nbsp;        TableColumn&lt;MusicItem, BigDecimal&gt; price = new TableColumn&lt;&gt;(&quot;Price&quot;);</b>
+<b class="fc"><i>97</i>&nbsp;        price.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;price&quot;));</b>
+<b class="fc"><i>98</i>&nbsp;        tableView.getColumns().add(price);</b>
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;//        TableColumn&lt;MusicItem, String&gt; songs = new TableColumn&lt;&gt;(&quot;Songs&quot;);
+<i>101</i>&nbsp;//        // As Every Music Item don&#39;t have songs attribute I create lambda function that will check the Object type
+<i>102</i>&nbsp;//        // and give different outputs to different object types
+<i>103</i>&nbsp;//        // Ex - Vinyl class don&#39;t have songs attribute so it will display Not Applicable for Row that contains Vinyl Objects
+<i>104</i>&nbsp;//        songs.setCellValueFactory(p -&gt; {
+<i>105</i>&nbsp;//            if (p.getValue().getClass().getName().equals(&quot;Model.Items.CD&quot;)) {
+<i>106</i>&nbsp;//                CD item = (CD) p.getValue();
+<i>107</i>&nbsp;//                return new SimpleStringProperty(item.getSongs().toString().replace(&quot;[&quot;, &quot;&quot;).replace(&quot;]&quot;, &quot;&quot;));
+<i>108</i>&nbsp;//            }
+<i>109</i>&nbsp;//            return new SimpleStringProperty(&quot;N/A&quot;);
+<i>110</i>&nbsp;//        });
+<i>111</i>&nbsp;//        tableView.getColumns().add(songs);
+<i>112</i>&nbsp;
+<b class="fc"><i>113</i>&nbsp;        TableColumn&lt;MusicItem, String&gt; totalDuration = new TableColumn&lt;&gt;(&quot;Total Duration&quot;);</b>
+<b class="fc"><i>114</i>&nbsp;        totalDuration.setCellValueFactory(p -&gt; {</b>
+<b class="fc"><i>115</i>&nbsp;            if (p.getValue().getClass().getName().equals(&quot;Model.Items.CD&quot;)) {</b>
+<b class="fc"><i>116</i>&nbsp;                CD item = (CD) p.getValue();</b>
+<b class="fc"><i>117</i>&nbsp;                return new SimpleStringProperty(String.format(&quot;%s:%-2d mins&quot;, item.getTotalDuration() / 60, item.getTotalDuration() % 60));</b>
+<i>118</i>&nbsp;            }
+<b class="fc"><i>119</i>&nbsp;            return new SimpleStringProperty(&quot;N/A&quot;);</b>
+<i>120</i>&nbsp;        });
+<b class="fc"><i>121</i>&nbsp;        tableView.getColumns().add(totalDuration);</b>
+<i>122</i>&nbsp;
+<b class="fc"><i>123</i>&nbsp;        TableColumn&lt;MusicItem, String&gt; speed = new TableColumn&lt;&gt;(&quot;Speed&quot;);</b>
+<b class="fc"><i>124</i>&nbsp;        speed.setCellValueFactory(p -&gt; {</b>
+<b class="fc"><i>125</i>&nbsp;            if (p.getValue().getClass().getName().equals(&quot;Model.Items.Vinyl&quot;)) {</b>
+<b class="fc"><i>126</i>&nbsp;                Vinyl item = (Vinyl) p.getValue();</b>
+<b class="fc"><i>127</i>&nbsp;                return new SimpleStringProperty(Integer.toString(item.getSpeed()));</b>
+<i>128</i>&nbsp;            }
+<b class="fc"><i>129</i>&nbsp;            return new SimpleStringProperty(&quot;N/A&quot;);</b>
+<i>130</i>&nbsp;        });
+<b class="fc"><i>131</i>&nbsp;        tableView.getColumns().add(speed);</b>
+<i>132</i>&nbsp;
+<b class="fc"><i>133</i>&nbsp;        TableColumn&lt;MusicItem, String&gt; diameter = new TableColumn&lt;&gt;(&quot;Diameter&quot;);</b>
+<b class="fc"><i>134</i>&nbsp;        diameter.setCellValueFactory(p -&gt; {</b>
+<b class="fc"><i>135</i>&nbsp;            if (p.getValue().getClass().getName().equals(&quot;Model.Items.Vinyl&quot;)) {</b>
+<b class="fc"><i>136</i>&nbsp;                Vinyl item = (Vinyl) p.getValue();</b>
+<b class="fc"><i>137</i>&nbsp;                return new SimpleStringProperty(Double.toString(item.getDiameter()));</b>
+<i>138</i>&nbsp;            }
+<b class="fc"><i>139</i>&nbsp;            return new SimpleStringProperty(&quot;N/A&quot;);</b>
+<i>140</i>&nbsp;        });
+<b class="fc"><i>141</i>&nbsp;        tableView.getColumns().add(diameter);</b>
+<i>142</i>&nbsp;
+<b class="fc"><i>143</i>&nbsp;        tableView.getItems().addAll(WestminsterMusicStoreManager.getItems());</b>
+<i>144</i>&nbsp;
+<b class="fc"><i>145</i>&nbsp;        return tableView;</b>
+<i>146</i>&nbsp;    }
+<i>147</i>&nbsp;
+<i>148</i>&nbsp;    /**
+<i>149</i>&nbsp;     * This will clear the all the entries on the table insert only entries that match the searchTerm
+<i>150</i>&nbsp;     */
+<i>151</i>&nbsp;    private static void updateTable() {
+<b class="fc"><i>152</i>&nbsp;        table.getItems().clear();</b>
+<b class="fc"><i>153</i>&nbsp;        for (MusicItem item : WestminsterMusicStoreManager.getItems()) {</b>
+<b class="fc"><i>154</i>&nbsp;            if (item.getTitle().toLowerCase().contains(searchTerm.toLowerCase())) {</b>
+<i>155</i>&nbsp;                //noinspection unchecked
+<b class="fc"><i>156</i>&nbsp;                table.getItems().add(item);</b>
+<i>157</i>&nbsp;            }
+<b class="fc"><i>158</i>&nbsp;        }</b>
+<b class="fc"><i>159</i>&nbsp;        table.refresh();</b>
+<b class="fc"><i>160</i>&nbsp;    }</b>
+<i>161</i>&nbsp;
+<i>162</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-08-04 22:32</div>
+</div>
+</body>
+</html>

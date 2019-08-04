@@ -1,0 +1,125 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CD</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">Model.Items</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CD (Model.Items)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CD</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/ 7)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package Model.Items;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import Helpers.Date;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import java.math.BigDecimal;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;public class CD extends MusicItem {
+<i>8</i>&nbsp;//    private ArrayList&lt;String&gt; songs = new ArrayList&lt;&gt;();
+<i>9</i>&nbsp;    private int totalDuration;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;    // This constructor is used to map data from the database to CD Object (As OMR)
+<i>12</i>&nbsp;    public CD(String itemID, String title, String genre, Date releaseDate, String artist, BigDecimal price, int totalDuration) {
+<b class="fc"><i>13</i>&nbsp;        super(itemID, title, genre, releaseDate, artist, price);</b>
+<i>14</i>&nbsp;//        this.songs = songs;
+<b class="fc"><i>15</i>&nbsp;        this.totalDuration = totalDuration;</b>
+<b class="fc"><i>16</i>&nbsp;    }</b>
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    // Create a new Instance of CD class
+<i>19</i>&nbsp;    public CD(String title, String genre, Date releaseDate, String artist, BigDecimal price, int totalDuration) {
+<b class="fc"><i>20</i>&nbsp;        super(title, genre, releaseDate, artist, price);</b>
+<b class="fc"><i>21</i>&nbsp;        this.totalDuration = totalDuration;</b>
+<b class="fc"><i>22</i>&nbsp;    }</b>
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;//    /**
+<i>25</i>&nbsp;//     * Adds a song to CD and updates the total duration of the CD
+<i>26</i>&nbsp;//     * @param song - Song Name
+<i>27</i>&nbsp;//     * @param duration - duration of the Song
+<i>28</i>&nbsp;//     */
+<i>29</i>&nbsp;//    public void addSong(String song, int duration) {
+<i>30</i>&nbsp;//        this.songs.add(song);
+<i>31</i>&nbsp;//        this.totalDuration += duration;
+<i>32</i>&nbsp;//    }
+<i>33</i>&nbsp;//
+<i>34</i>&nbsp;//    public ArrayList&lt;String&gt; getSongs() {
+<i>35</i>&nbsp;//        return songs;
+<i>36</i>&nbsp;//    }
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    public int getTotalDuration() {
+<b class="fc"><i>39</i>&nbsp;        return totalDuration;</b>
+<i>40</i>&nbsp;    }
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-08-04 22:32</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,150 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Date</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">Helpers</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Date (Helpers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Date</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96.3%
+  </span>
+  <span class="absValue">
+    (26/ 27)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package Helpers;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;/**
+<i>4</i>&nbsp; * Simple Class That hold year, month and day
+<i>5</i>&nbsp; */
+<i>6</i>&nbsp;public class Date {
+<i>7</i>&nbsp;    private int year;
+<i>8</i>&nbsp;    private int month;
+<i>9</i>&nbsp;    private int day;
+<i>10</i>&nbsp;
+<b class="fc"><i>11</i>&nbsp;    public Date(int year, int month, int day) {</b>
+<b class="fc"><i>12</i>&nbsp;        this.setYear(year);</b>
+<b class="fc"><i>13</i>&nbsp;        this.setMonth(month);</b>
+<b class="fc"><i>14</i>&nbsp;        this.setDay(day);</b>
+<b class="fc"><i>15</i>&nbsp;    }</b>
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    public int getYear() {
+<b class="fc"><i>18</i>&nbsp;        return year;</b>
+<i>19</i>&nbsp;    }
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    private void setYear(int year) {
+<b class="fc"><i>22</i>&nbsp;        this.year = year;</b>
+<b class="fc"><i>23</i>&nbsp;    }</b>
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    public int getMonth() {
+<b class="fc"><i>26</i>&nbsp;        return month;</b>
+<i>27</i>&nbsp;    }
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    private void setMonth(int month) {
+<b class="fc"><i>30</i>&nbsp;        if(month &gt; 0 &amp;&amp; month &lt;= 12)</b>
+<b class="fc"><i>31</i>&nbsp;            this.month = month;</b>
+<i>32</i>&nbsp;        else
+<b class="fc"><i>33</i>&nbsp;            throw  new IllegalArgumentException(&quot;Month should be in range of 1-12&quot;);</b>
+<b class="fc"><i>34</i>&nbsp;    }</b>
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    public int getDay() {
+<b class="fc"><i>37</i>&nbsp;        return day;</b>
+<i>38</i>&nbsp;    }
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    private void setDay(int day) {
+<b class="fc"><i>41</i>&nbsp;        if(this.month == 2){</b>
+<b class="fc"><i>42</i>&nbsp;            if(this.year % 4 == 0){</b>
+<b class="fc"><i>43</i>&nbsp;                if(day &gt; 0 &amp;&amp; day &lt;= 29)</b>
+<b class="fc"><i>44</i>&nbsp;                    this.day = day;</b>
+<i>45</i>&nbsp;                else
+<b class="fc"><i>46</i>&nbsp;                    throw  new IllegalArgumentException(&quot;Day should be in range of 1-29&quot;);</b>
+<i>47</i>&nbsp;            }
+<i>48</i>&nbsp;            else{
+<b class="fc"><i>49</i>&nbsp;                if(day &gt; 0 &amp;&amp; day &lt;= 28)</b>
+<b class="fc"><i>50</i>&nbsp;                    this.day = day;</b>
+<i>51</i>&nbsp;                else
+<b class="fc"><i>52</i>&nbsp;                    throw  new IllegalArgumentException(&quot;Day should be in range of 1-28&quot;);</b>
+<i>53</i>&nbsp;            }
+<i>54</i>&nbsp;        }
+<b class="fc"><i>55</i>&nbsp;        else if(day &gt; 0 &amp;&amp; day &lt;= 31){</b>
+<b class="fc"><i>56</i>&nbsp;            this.day = day;</b>
+<i>57</i>&nbsp;        }
+<i>58</i>&nbsp;        else{
+<b class="nc"><i>59</i>&nbsp;            throw  new IllegalArgumentException(&quot;Day should be in range of 1-31&quot;);</b>
+<i>60</i>&nbsp;        }
+<b class="fc"><i>61</i>&nbsp;    }</b>
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;    @Override
+<i>64</i>&nbsp;    public String toString() {
+<b class="fc"><i>65</i>&nbsp;        return year + &quot;/&quot; + month + &quot;/&quot; + day;</b>
+<i>66</i>&nbsp;    }
+<i>67</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-08-04 22:32</div>
+</div>
+</body>
+</html>
