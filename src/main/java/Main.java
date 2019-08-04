@@ -208,6 +208,7 @@ public class Main {
 
             manager.addItem(vinyl);
             System.out.printf("%s vinyl record was successfully added to the Database, Item ID - %s\n", name, vinyl.getItemID());
+            System.out.println("You can add " + (1000 - WestminsterMusicStoreManager.getItems().size()) +" more items to store" );
         }
 
         displayMenu();

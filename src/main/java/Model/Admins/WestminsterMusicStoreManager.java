@@ -122,7 +122,7 @@ public class WestminsterMusicStoreManager implements StoreManager {
             if (item.getItemID().equals(itemId)) {
                 items.remove(item);
                 musicItemCollection.deleteOne(eq("itemID", itemId));
-                System.out.printf("You can add %s more items to the database\n", MAX_COUNT-(items.size()+1));
+                System.out.printf("You can add %s more items to the database\n", MAX_COUNT-(items.size()));
                 return true;
             }
         }
