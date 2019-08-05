@@ -273,10 +273,10 @@ public class Main {
 
     private static void displayMenu() {
         System.out.println(" +---------------------------------------------------------+");
-        System.out.println(" | 1 | Add a Item to them System                           |");
+        System.out.println(" | 1 | Add an Item to them System                          |");
         System.out.println(" | 2 | Delete Item from the System                         |");
-        System.out.println(" | 3 | Print Summery about Items in the System             |");
-        System.out.println(" | 4 | Print Detailed Summery about Items in the System    |");
+        System.out.println(" | 3 | Print Summary about Items in the System             |");
+        System.out.println(" | 4 | Print Detailed Summary about Items in the System    |");
         System.out.println(" | 5 | Sort Items in ascending order by title              |");
         System.out.println(" | 6 | Sell Item(s) to User                                |");
         System.out.println(" | 7 | Launch JavaFX UI                                    |");
